@@ -289,17 +289,23 @@ class _TaskCardState extends State<TaskCard> {
       child: Column(
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+
             children: [
-              Checkbox(
-                fillColor: (widget.task.priority == Priority.high)
-                    ? Theme.of(context).colorScheme.highPrioryCheckBox.fillColor
-                    : Theme.of(context).checkboxTheme.fillColor,
-                side: (widget.task.priority == Priority.high)
-                    ? Theme.of(context).colorScheme.highPrioryCheckBox.side
-                    : Theme.of(context).checkboxTheme.side,
-                value: isComplete,
-                onChanged: changeStatus,
+              Stack(
+                children: [
+                  Checkbox(
+                    fillColor: (widget.task.priority == Priority.high)
+                        ? Theme.of(context).colorScheme.highPrioryCheckBox.fillColor
+                        : Theme.of(context).checkboxTheme.fillColor,
+                    side: (widget.task.priority == Priority.high)
+                        ? Theme.of(context).colorScheme.highPrioryCheckBox.side
+                        : Theme.of(context).checkboxTheme.side,
+                    value: isComplete,
+                    onChanged: changeStatus,
+
+                  ),
+                ],
               ),
               Expanded(
                 child: Padding(

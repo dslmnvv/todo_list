@@ -8,9 +8,9 @@ class TodoListApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return MaterialApp(
       navigatorKey: NavigationService.navigatorKey,
-      theme:  StyleLibrary.theme.main,
+      theme: StyleLibrary.theme.main,
       darkTheme: StyleLibrary.theme.main, //todo: изменить тему
       debugShowCheckedModeBanner: false,
       title: 'To-Do list',

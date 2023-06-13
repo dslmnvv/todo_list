@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class LightAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const LightAppBar({Key? key, this.left, this.center, this.right}) : super(key: key);
+  const LightAppBar({Key? key, this.left, this.center, this.right})
+      : super(key: key);
 
   final Widget? left;
   final Widget? center;

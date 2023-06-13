@@ -19,5 +19,4 @@ class StyleColor {
   var backPrimary = const Color.fromRGBO(247, 246, 242, 1);
   var backSecondary = const Color.fromRGBO(255, 255, 255, 1);
   var backLight = const Color.fromRGBO(255, 255, 255, 1);
-
 }

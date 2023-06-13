@@ -17,7 +17,7 @@ class HomeProvider with ChangeNotifier {
   int get complete {
     int count = 0;
     for (var element in tasks) {
-      if(element.isComplete){
+      if (element.isComplete) {
         count++;
       }
     }
@@ -28,12 +28,12 @@ class HomeProvider with ChangeNotifier {
     NavigationService.push(routeName: AddTaskPage.routeName);
   }
 
-  void changeTask(int index, Task task){
+  void changeTask(int index, Task task) {
     tasks[index] = task;
     notifyListeners();
   }
 
-  void openChangeTaskPage(int index){
+  void openChangeTaskPage(int index) {
     NavigationService.push(
         routeName: AddTaskPage.routeName,
         arguments: TaskArgs(tasks.elementAt(index), index));

@@ -1,4 +1,4 @@
-enum Priority{
+enum Priority {
   none('Нет'),
   low('Низкий'),
   high('Высокий');
@@ -6,26 +6,25 @@ enum Priority{
   final String nameField;
   const Priority(this.nameField);
 
-
-  factory Priority.fromNameField(String name){
-
-    switch (name){
-      case 'Низкий' :{
-        return Priority.low;
-      }
-      case 'Высокий' : {
-        return Priority.high;
-      }
-      default : {
-        return Priority.none;
-      }
+  factory Priority.fromNameField(String name) {
+    switch (name) {
+      case 'Низкий':
+        {
+          return Priority.low;
+        }
+      case 'Высокий':
+        {
+          return Priority.high;
+        }
+      default:
+        {
+          return Priority.none;
+        }
     }
   }
-
 }
 
-
-class Task{
+class Task {
   String description;
   Priority? priority;
   DateTime? date;
@@ -38,7 +37,7 @@ class Task{
     this.isComplete = false,
   });
 
-  factory Task.empty(){
+  factory Task.empty() {
     return Task(description: '');
   }
 

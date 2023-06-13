@@ -31,18 +31,16 @@ class HomePage extends StatelessWidget {
                   padding: StyleLibrary.padding.content,
                   sliver: SliverList(
                     delegate: SliverChildBuilderDelegate(
-                      childCount: state.tasks.length+1,
+                      childCount: state.tasks.length + 1,
                       (BuildContext context, int index) {
-
-                        if(index == state.tasks.length){
+                        if (index == state.tasks.length) {
                           return Container(
-                            decoration:  BoxDecoration(
-                              color: Theme.of(context).colorScheme.backSecondary,
-                              borderRadius: const BorderRadius.only(
-                                bottomLeft: Radius.circular(8),
-                                bottomRight: Radius.circular(8)
-                              )
-                            ),
+                            decoration: BoxDecoration(
+                                color:
+                                    Theme.of(context).colorScheme.backSecondary,
+                                borderRadius: const BorderRadius.only(
+                                    bottomLeft: Radius.circular(8),
+                                    bottomRight: Radius.circular(8))),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
@@ -51,9 +49,15 @@ class HomePage extends StatelessWidget {
                                 ),
                                 TextButton(
                                   onPressed: state.openAddTaskPage,
-                                  child: Text('Новое', style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                    color: StyleLibrary.color.tertiary,
-                                  ),),
+                                  child: Text(
+                                    'Новое',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium
+                                        ?.copyWith(
+                                          color: StyleLibrary.color.tertiary,
+                                        ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -61,16 +65,15 @@ class HomePage extends StatelessWidget {
                         }
 
                         return DismissibleCard(
-                          index: index,
-                          len: state.tasks.length,
-                          task: state.tasks.elementAt(index),
-                          onDismiss: () =>
-                              state.removeTask(state.tasks.elementAt(index)),
-                          onChangeStatus: state.changeStatusTask,
-                          openChangeTask: () => state.openChangeTaskPage(
-                            index,
-                          )
-                        );
+                            index: index,
+                            len: state.tasks.length,
+                            task: state.tasks.elementAt(index),
+                            onDismiss: () =>
+                                state.removeTask(state.tasks.elementAt(index)),
+                            onChangeStatus: state.changeStatusTask,
+                            openChangeTask: () => state.openChangeTaskPage(
+                                  index,
+                                ));
                       },
                     ),
                   ),
@@ -349,14 +352,17 @@ class _TaskCardState extends State<TaskCard> {
                                   )),
                           (widget.task.date != null)
                               ? Padding(
-                                padding: const EdgeInsets.only(top: 5),
-                                child: Text(StyleLibrary.format.main
-                                    .format(widget.task.date!),
-                            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                                color: StyleLibrary.color.tertiary
-                            ),
-                          ),
-                              )
+                                  padding: const EdgeInsets.only(top: 5),
+                                  child: Text(
+                                    StyleLibrary.format.main
+                                        .format(widget.task.date!),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium
+                                        ?.copyWith(
+                                            color: StyleLibrary.color.tertiary),
+                                  ),
+                                )
                               : const SizedBox(),
                         ],
                       ),

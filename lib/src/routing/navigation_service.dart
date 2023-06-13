@@ -5,43 +5,43 @@ import 'package:todo_list/src/presentation/pages/add_task_page.dart';
 import 'package:todo_list/src/presentation/pages/home_page.dart';
 
 /// #### Упрощенная навигация, не требуют context
-class NavigationService{
-  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+class NavigationService {
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
 
   static BuildContext get context => navigatorKey.currentContext!;
 
-  static void push({required String routeName, Object? arguments}){
+  static void push({required String routeName, Object? arguments}) {
     Navigator.pushNamed(context, routeName, arguments: arguments);
   }
 
-  static void pushAndRemoveUntil({required String routeName}){
+  static void pushAndRemoveUntil({required String routeName}) {
     Navigator.pushNamedAndRemoveUntil(context, routeName, (route) => false);
   }
 
-  static void replace({required String routeName}){
+  static void replace({required String routeName}) {
     Navigator.pushReplacementNamed(context, routeName);
   }
 
-  static void pop(){
+  static void pop() {
     log('Call: pop', name: 'NavigationService');
     Navigator.pop(context);
   }
-  static void popUntil({required String routeName}){
+
+  static void popUntil({required String routeName}) {
     Navigator.popUntil(context, ModalRoute.withName(routeName));
   }
 
-  static void popUntilContext({required BuildContext context, required String routeName}){
+  static void popUntilContext(
+      {required BuildContext context, required String routeName}) {
     Navigator.popUntil(context, ModalRoute.withName(routeName));
   }
 
-  static MaterialPageRoute onGenerateRoute(RouteSettings settings){
-
-    print(settings.arguments);
-
-    if(settings.arguments != null){
-      if(settings.name == AddTaskPage.routeName){
+  static MaterialPageRoute onGenerateRoute(RouteSettings settings) {
+    if (settings.arguments != null) {
+      if (settings.name == AddTaskPage.routeName) {
         var args = settings.arguments as TaskArgs;
-        if(args.index != null && args.task != null){
+        if (args.index != null && args.task != null) {
           return MaterialPageRoute(builder: (context) {
             return AddTaskPage(task: args.task, index: args.index);
           });
@@ -49,14 +49,12 @@ class NavigationService{
       }
     }
 
-    var routes = <String, WidgetBuilder> {
-      HomePage.routeName: (context) =>  const HomePage(),
-      AddTaskPage.routeName: (context) =>  const AddTaskPage(),
+    var routes = <String, WidgetBuilder>{
+      HomePage.routeName: (context) => const HomePage(),
+      AddTaskPage.routeName: (context) => const AddTaskPage(),
     };
 
     WidgetBuilder builder = routes[settings.name]!;
     return MaterialPageRoute(builder: (context) => builder(context));
-
   }
-
 }

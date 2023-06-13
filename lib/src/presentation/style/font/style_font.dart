@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/src/presentation/style/style_library.dart';
 
-class StyleFont{
-
+class StyleFont {
   var largeTitle = TextStyle(
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w500,
@@ -25,18 +24,16 @@ class StyleFont{
     color: StyleLibrary.color.primary,
   );
 
-  var body =  TextStyle(
+  var body = TextStyle(
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w400,
     color: StyleLibrary.color.primary,
   );
 
-  var subhead =  TextStyle(
+  var subhead = TextStyle(
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w400,
     fontSize: 14,
     color: StyleLibrary.color.primary,
   );
-
-
 }

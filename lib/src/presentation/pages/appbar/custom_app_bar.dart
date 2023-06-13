@@ -4,8 +4,7 @@ import 'package:flutter/src/rendering/sliver_persistent_header.dart';
 import 'package:todo_list/src/presentation/style/style_library.dart';
 import 'package:todo_list/src/presentation/style/theme/style_theme.dart';
 
-class CustomAppBarDelegate implements SliverPersistentHeaderDelegate{
-
+class CustomAppBarDelegate implements SliverPersistentHeaderDelegate {
   @override
   final double maxExtent;
   @override
@@ -17,7 +16,6 @@ class CustomAppBarDelegate implements SliverPersistentHeaderDelegate{
 
   final Widget? action;
 
-
   CustomAppBarDelegate({
     required this.maxExtent,
     required this.minExtent,
@@ -27,7 +25,8 @@ class CustomAppBarDelegate implements SliverPersistentHeaderDelegate{
   });
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       padding: StyleLibrary.padding.appBar,
       color: Theme.of(context).colorScheme.backPrimary,
@@ -36,59 +35,63 @@ class CustomAppBarDelegate implements SliverPersistentHeaderDelegate{
         children: [
           Positioned(
             left: getXPosition(shrinkOffset),
-            bottom: getYPosition(shrinkOffset) + getReduction(shrinkOffset, 20, 0),
+            bottom:
+                getYPosition(shrinkOffset) + getReduction(shrinkOffset, 20, 0),
             child: Text(
-              title, style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontSize: getReduction(shrinkOffset, 32, 20),
-            ),
+              title,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontSize: getReduction(shrinkOffset, 32, 20),
+                  ),
             ),
           ),
           Positioned(
             left: getXPosition(shrinkOffset),
             bottom: getYPosition(shrinkOffset),
             child: Text(
-              subTitle, style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              fontSize: getReduction(shrinkOffset, 16, 8),
-              color: StyleLibrary.color.tertiary.withOpacity(titleOpacity(shrinkOffset))
-            ),
+              subTitle,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  fontSize: getReduction(shrinkOffset, 16, 8),
+                  color: StyleLibrary.color.tertiary
+                      .withOpacity(titleOpacity(shrinkOffset))),
             ),
           ),
-           Positioned(
+          Positioned(
             right: 0,
             bottom: getYPosition(shrinkOffset),
-            child: (action != null)
-                ? action! : const SizedBox(),
+            child: (action != null) ? action! : const SizedBox(),
           )
         ],
       ),
     );
   }
-  
-  double getYPosition(double shrinkOffset){
+
+  double getYPosition(double shrinkOffset) {
     return 1.0 - max(0.0, shrinkOffset) / maxExtent;
   }
 
-  double getXPosition(double shrinkOffset){
-   double leftPad = 60 - StyleLibrary.padding.appBar.left;
+  double getXPosition(double shrinkOffset) {
+    double leftPad = 60 - StyleLibrary.padding.appBar.left;
 
     return leftPad - (shrinkOffset * leftPad) / maxExtent;
   }
+
   double titleOpacity(double shrinkOffset) {
     double opacity = 0.9 - max(0.0, shrinkOffset) / maxExtent;
-    if(opacity > 0.3){
+    if (opacity > 0.3) {
       return 0.3;
     }
-    if(opacity < 0){
+    if (opacity < 0) {
       return 0;
     }
 
     return opacity;
   }
 
-  double getReduction(double shrinkOffset, double maxSize, double minSize){
-    return maxSize - ((shrinkOffset - minExtent) * (maxSize - minSize))/(maxExtent-minExtent);
+  double getReduction(double shrinkOffset, double maxSize, double minSize) {
+    return maxSize -
+        ((shrinkOffset - minExtent) * (maxSize - minSize)) /
+            (maxExtent - minExtent);
   }
-
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
@@ -97,7 +100,8 @@ class CustomAppBarDelegate implements SliverPersistentHeaderDelegate{
 
   @override
   // TODO: implement showOnScreenConfiguration
-  PersistentHeaderShowOnScreenConfiguration? get showOnScreenConfiguration => null;
+  PersistentHeaderShowOnScreenConfiguration? get showOnScreenConfiguration =>
+      null;
 
   @override
   // TODO: implement snapConfiguration
@@ -110,5 +114,4 @@ class CustomAppBarDelegate implements SliverPersistentHeaderDelegate{
   @override
   // TODO: implement vsync
   TickerProvider? get vsync => null;
-
 }

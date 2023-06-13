@@ -7,8 +7,7 @@ import 'package:todo_list/src/presentation/style/input/input_style.dart';
 import 'package:todo_list/src/presentation/style/padding/stylle_padding.dart';
 import 'package:todo_list/src/presentation/style/theme/style_theme.dart';
 
-class StyleLibrary{
-
+class StyleLibrary {
   static var theme = StyleTheme();
   static var font = StyleFont();
   static var padding = StylePadding();
@@ -16,5 +15,4 @@ class StyleLibrary{
   static var input = InputStyle();
   static var border = StyleBorder();
   static var format = StyleFormat();
-
 }

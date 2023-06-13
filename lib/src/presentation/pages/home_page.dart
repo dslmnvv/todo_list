@@ -31,21 +31,45 @@ class HomePage extends StatelessWidget {
                   padding: StyleLibrary.padding.content,
                   sliver: SliverList(
                     delegate: SliverChildBuilderDelegate(
-                      childCount: state.tasks.length,
+                      childCount: state.tasks.length+1,
                       (BuildContext context, int index) {
-                        return ClipRRect(
-                          clipBehavior: Clip.hardEdge,
-                          child: DismissibleCard(
-                            index: index,
-                            len: state.tasks.length,
-                            task: state.tasks.elementAt(index),
-                            onDismiss: () =>
-                                state.removeTask(state.tasks.elementAt(index)),
-                            onChangeStatus: state.changeStatusTask,
-                            openChangeTask: () => state.openChangeTaskPage(
-                              index,
-                            )
-                          ),
+
+                        if(index == state.tasks.length){
+                          return Container(
+                            decoration:  BoxDecoration(
+                              color: Theme.of(context).colorScheme.backSecondary,
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(8),
+                                bottomRight: Radius.circular(8)
+                              )
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  width: 50,
+                                ),
+                                TextButton(
+                                  onPressed: state.openAddTaskPage,
+                                  child: Text('Новое', style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                    color: StyleLibrary.color.tertiary,
+                                  ),),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+
+                        return DismissibleCard(
+                          index: index,
+                          len: state.tasks.length,
+                          task: state.tasks.elementAt(index),
+                          onDismiss: () =>
+                              state.removeTask(state.tasks.elementAt(index)),
+                          onChangeStatus: state.changeStatusTask,
+                          openChangeTask: () => state.openChangeTaskPage(
+                            index,
+                          )
                         );
                       },
                     ),

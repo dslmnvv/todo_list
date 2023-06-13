@@ -10,7 +10,7 @@ class LightAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: kToolbarHeight, left: 16, right: 16, bottom: 16),
+      padding: const EdgeInsets.only(top: 32, left: 16, right: 16, bottom: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -24,5 +24,5 @@ class LightAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size(0, 64 + kToolbarHeight);
+  Size get preferredSize => const Size(0, 64);
 }

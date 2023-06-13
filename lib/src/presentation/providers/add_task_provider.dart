@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/src/domain/models/task.dart';
@@ -57,7 +58,24 @@ class AddTaskProvider with ChangeNotifier{
       NavigationService.pop();
     }else{
       log('Description is empty : ${task.description}', name: dName);
-      //todo: предупредить о пустоте
+      showDialog(
+          context: NavigationService.context,
+          builder: (context){
+            return const AlertDialog(
+              content: Text('Заполни хотябы описание 🙏🏻', textAlign: TextAlign.center,),
+              actions: [
+                TextButton(
+                    onPressed: NavigationService.pop,
+                    child: Text('ок')
+                ),
+                TextButton(
+                    onPressed: NavigationService.pop,
+                    child: Text('ну ок')
+                ),
+              ],
+            );
+          }
+      );
     }
   }
   onRemove(Task task){

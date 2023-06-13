@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:todo_list/src/presentation/pages/add_task_page.dart';
 import 'package:todo_list/src/presentation/pages/home_page.dart';
 
 /// #### Упрощенная навигация, не требуют context
@@ -20,6 +23,7 @@ class NavigationService{
   }
 
   static void pop(){
+    log('Call: pop', name: 'NavigationService');
     Navigator.pop(context);
   }
   static void popUntil({required String routeName}){
@@ -32,8 +36,22 @@ class NavigationService{
 
   static MaterialPageRoute onGenerateRoute(RouteSettings settings){
 
+    print(settings.arguments);
+
+    if(settings.arguments != null){
+      if(settings.name == AddTaskPage.routeName){
+        var args = settings.arguments as TaskArgs;
+        if(args.index != null && args.task != null){
+          return MaterialPageRoute(builder: (context) {
+            return AddTaskPage(task: args.task, index: args.index);
+          });
+        }
+      }
+    }
+
     var routes = <String, WidgetBuilder> {
-      HomePage.routeName: (context) =>  HomePage(),
+      HomePage.routeName: (context) =>  const HomePage(),
+      AddTaskPage.routeName: (context) =>  const AddTaskPage(),
     };
 
     WidgetBuilder builder = routes[settings.name]!;

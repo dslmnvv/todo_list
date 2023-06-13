@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/rendering/sliver_persistent_header.dart';
 import 'package:todo_list/src/presentation/style/style_library.dart';
+import 'package:todo_list/src/presentation/style/theme/style_theme.dart';
 
 class CustomAppBarDelegate implements SliverPersistentHeaderDelegate{
 
@@ -29,7 +30,7 @@ class CustomAppBarDelegate implements SliverPersistentHeaderDelegate{
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       padding: StyleLibrary.padding.appBar,
-      color: Theme.of(context).colorScheme.primary,
+      color: Theme.of(context).colorScheme.backPrimary,
       child: Stack(
         fit: StackFit.expand,
         children: [

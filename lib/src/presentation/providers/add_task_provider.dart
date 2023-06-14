@@ -61,7 +61,7 @@ class AddTaskProvider with ChangeNotifier {
           builder: (context) {
             return const AlertDialog(
               content: Text(
-                'Заполни хотябы описание 🙏🏻',
+                'Заполни хотя бы описание 🙏🏻',
                 textAlign: TextAlign.center,
               ),
               actions: [

@@ -16,7 +16,7 @@ class HomeProvider with ChangeNotifier {
 
   int get complete {
     int count = 0;
-    for (var element in tasks) {
+    for (var element in _tasks) {
       if (element.isComplete) {
         count++;
       }

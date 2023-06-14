@@ -27,6 +27,8 @@ class CustomAppBarDelegate implements SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
+
+
     return Container(
       padding: StyleLibrary.padding.appBar,
       color: Theme.of(context).colorScheme.backPrimary,

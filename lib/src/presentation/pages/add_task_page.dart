@@ -272,6 +272,7 @@ class _DatePickerContainerState extends State<DatePickerContainer> {
                     onPressed: () {
                       var now = DateTime.now();
                       showDatePicker(
+                        locale: const Locale('ru'),
                         firstDate: now,
                         lastDate: DateTime(now.year + 99),
                         initialDate: DateTime.now(),

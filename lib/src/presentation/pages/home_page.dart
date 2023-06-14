@@ -145,7 +145,7 @@ class EyeButton extends StatefulWidget {
 }
 
 class _EyeButtonState extends State<EyeButton> {
-  bool show = true;
+  bool show = false;
 
   @override
   Widget build(BuildContext context) {
@@ -221,7 +221,14 @@ class _DismissibleCardState extends State<DismissibleCard> {
               ],
             ),
           )),
-      onDismissed: (val) => widget.onDismiss(),
+      onDismissed: (direction) {
+        if(direction.name == 'startToEnd'){
+          widget.onChangeStatus(true, widget.index);
+        }else{
+          widget.onDismiss();
+        }
+
+      },
       child: TaskCard(
         index: widget.index,
         isFirst: widget.index == 0,

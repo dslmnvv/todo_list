@@ -9,10 +9,10 @@ import '../../domain/models/task.dart';
 class HomeProvider with ChangeNotifier {
   static const dName = 'HomeProvider';
 
-  List<Task> tasks = [];
+  List<Task> _tasks = [];
+  bool showAll = false;
 
-  List<Task> all = [];
-  List<Task> sort = [];
+
 
   int get complete {
     int count = 0;
@@ -22,6 +22,23 @@ class HomeProvider with ChangeNotifier {
       }
     }
     return count;
+  }
+
+
+  List<Task> get tasks {
+    if(showAll){
+      return _tasks;
+    }else{
+      return _tasks.where((element) => element.isComplete != true).toList();
+    }
+  }
+
+  set tasks(List<Task> value) {
+    _tasks = value;
+  }
+
+  get notCompleteTasks{
+    return tasks.where((element) => element.isComplete != true).toList();
   }
 
   void openAddTaskPage() {
@@ -40,12 +57,12 @@ class HomeProvider with ChangeNotifier {
   }
 
   void addTask(Task task) {
-    tasks.add(task);
+    _tasks.add(task);
     notifyListeners();
   }
 
   void removeTask(Task task) {
-    tasks.remove(task);
+    _tasks.remove(task);
     log('Remove Task $task', name: dName);
     notifyListeners();
   }
@@ -57,14 +74,16 @@ class HomeProvider with ChangeNotifier {
   }
 
   void showAllTasks(bool value) {
-    if (value) {
-      tasks = all;
+
+    showAll = value;
+    notifyListeners();
+
+    /*if (!value) {
+      tasks = _tasks;
       notifyListeners();
     } else {
-      all = tasks;
-      sort = tasks.where((element) => element.isComplete != true).toList();
-      tasks = sort;
+      tasks = notCompleteTasks;
       notifyListeners();
-    }
+    }*/
   }
 }

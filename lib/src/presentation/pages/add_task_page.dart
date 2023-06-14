@@ -57,9 +57,7 @@ class AddTaskPage extends StatelessWidget {
                   ),
                 ),
                 body: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(
-                    parent: BouncingScrollPhysics(),
-                  ),
+                  physics: BouncingScrollPhysics(),
                   child: Padding(
                     padding: StyleLibrary.padding.body,
                     child: Column(

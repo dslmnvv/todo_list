@@ -43,11 +43,16 @@ dependencies:
 
 dev_dependencies:
     flutter_launcher_icons: ^0.13.1
+    change_app_package_name: ^1.1.0
+    flutter_native_splash: ^2.3.1
 flutter_launcher_icons:
   android: true
   ios: true
   image_path: "assets/png/icon.png"
 
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: assets/png/splash_screen.png
 
 
   flutter_test:

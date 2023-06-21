@@ -23,4 +23,4 @@
 </p>
 
 ## Release
-- [last release apk](https://disk.yandex.ru/d/haHQx-nVa2mWpw)
+- [last release apk](https://disk.yandex.ru/d/_pc9ZVnjiTrRLQ)

@@ -269,7 +269,7 @@ class _TaskCardState extends State<TaskCard> {
   @override
   void initState() {
     super.initState();
-    isComplete = widget.task.isComplete;
+    isComplete = widget.task.done;
   }
 
   @override
@@ -302,10 +302,10 @@ class _TaskCardState extends State<TaskCard> {
               Stack(
                 children: [
                   Checkbox(
-                    fillColor: (widget.task.priority == Priority.high)
+                    fillColor: (widget.task.importance == Priority.important)
                         ? Theme.of(context).colorScheme.highPrioryCheckBox.fillColor
                         : Theme.of(context).checkboxTheme.fillColor,
-                    side: (widget.task.priority == Priority.high)
+                    side: (widget.task.importance == Priority.important)
                         ? Theme.of(context).colorScheme.highPrioryCheckBox.side
                         : Theme.of(context).checkboxTheme.side,
                     value: isComplete,
@@ -320,7 +320,7 @@ class _TaskCardState extends State<TaskCard> {
                   child: Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
-                      (widget.task.priority == Priority.high)
+                      (widget.task.importance == Priority.important)
                           ? Padding(
                               padding: const EdgeInsets.only(right: 5),
                               child: Text(
@@ -335,7 +335,7 @@ class _TaskCardState extends State<TaskCard> {
                               ),
                             )
                           : const SizedBox(),
-                      (widget.task.priority == Priority.low)
+                      (widget.task.importance == Priority.low)
                           ? Padding(
                               padding: const EdgeInsets.only(right: 5),
                               child: Icon(
@@ -346,7 +346,7 @@ class _TaskCardState extends State<TaskCard> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(widget.task.description,
+                          Text(widget.task.text,
                               maxLines: 3,
                               style: Theme.of(context)
                                   .textTheme
@@ -363,12 +363,12 @@ class _TaskCardState extends State<TaskCard> {
                                         ? TextDecoration.lineThrough
                                         : TextDecoration.none,
                                   )),
-                          (widget.task.date != null)
+                          (widget.task.deadline != null)
                               ? Padding(
                                   padding: const EdgeInsets.only(top: 5),
                                   child: Text(
                                     StyleLibrary.format.main
-                                        .format(widget.task.date!),
+                                        .format(widget.task.deadline!),
                                     style: Theme.of(context)
                                         .textTheme
                                         .headlineMedium

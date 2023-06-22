@@ -17,7 +17,7 @@ class HomeProvider with ChangeNotifier {
   int get complete {
     int count = 0;
     for (var element in tasks) {
-      if (element.isComplete) {
+      if (element.done) {
         count++;
       }
     }
@@ -29,7 +29,7 @@ class HomeProvider with ChangeNotifier {
     if(showAll){
       return _tasks;
     }else{
-      return _tasks.where((element) => element.isComplete != true).toList();
+      return _tasks.where((element) => element.done != true).toList();
     }
   }
 
@@ -38,7 +38,7 @@ class HomeProvider with ChangeNotifier {
   }
 
   get notCompleteTasks{
-    return tasks.where((element) => element.isComplete != true).toList();
+    return tasks.where((element) => element.done != true).toList();
   }
 
   void openAddTaskPage() {
@@ -68,7 +68,7 @@ class HomeProvider with ChangeNotifier {
   }
 
   void changeStatusTask(bool status, int index) {
-    tasks.elementAt(index).isComplete = status;
+    tasks.elementAt(index).done = status;
     notifyListeners();
     log('Change status for Task $index', name: dName);
   }

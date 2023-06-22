@@ -8,6 +8,7 @@ import 'package:todo_list/src/presentation/providers/add_task_provider.dart';
 import 'package:todo_list/src/presentation/style/style_library.dart';
 import 'package:todo_list/src/presentation/style/theme/style_theme.dart';
 import 'package:todo_list/src/routing/navigation_service.dart';
+import 'package:uuid/uuid.dart';
 
 class TaskArgs {
   final Task? task;
@@ -30,7 +31,9 @@ class AddTaskPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (context) => AddTaskProvider(task ?? Task.empty()),
+        create: (context) => AddTaskProvider(task ?? Task.empty(
+          id: Uuid().v1()
+        )),
         child: Builder(
           builder: (context) {
             var state = context.watch<AddTaskProvider>();
@@ -65,19 +68,19 @@ class AddTaskPage extends StatelessWidget {
                       children: [
                         DescriptionField(
                           onChanged: state.onChanged,
-                          initialValue: task?.description,
+                          initialValue: task?.text,
                         ),
                         StyleLibrary.padding.hBox,
                         PriorityContainer(
                           onSelect: state.selectPriority,
-                          priority: task?.priority ?? Priority.none,
+                          priority: task?.importance ?? Priority.basic,
                         ),
                         const Divider(),
                         StyleLibrary.padding.hBox,
                         DatePickerContainer(
                           onSelect: state.selectDate,
                           onSwitch: state.switchDate,
-                          initialDate: task?.date,
+                          initialDate: task?.deadline,
                         ),
                         StyleLibrary.padding.hBox,
                         const Divider(),
@@ -139,7 +142,7 @@ class PriorityContainer extends StatefulWidget {
 }
 
 class _PriorityContainerState extends State<PriorityContainer> {
-  Priority priority = Priority.none;
+  Priority priority = Priority.basic;
   late List<String> items;
   //late String current;
 
@@ -169,7 +172,7 @@ class _PriorityContainerState extends State<PriorityContainer> {
             var prior = Priority.fromNameField(value);
 
             switch (prior) {
-              case Priority.high:
+              case Priority.important:
                 {
                   return DropdownMenuItem<String>(
                       value: value,

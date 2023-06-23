@@ -15,7 +15,7 @@ class TodoListApp extends StatelessWidget {
       ],
       supportedLocales: const [
         Locale('en'),
-        Locale('ru')
+        Locale('ru'),
       ],
       navigatorKey: NavigationService.navigatorKey,
       theme: StyleLibrary.theme.main,

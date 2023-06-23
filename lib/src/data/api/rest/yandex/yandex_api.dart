@@ -8,30 +8,39 @@ class YandexApi implements Rest {
 
   @override
   Future<Map<String, dynamic>?> delete(
-      {required String endPoint, Map<String, dynamic>? data}) async {
-    return await client.delete(endPoint: endPoint, data: data);
+      {required String endPoint,
+      Map<String, dynamic>? data,
+      Map<String, dynamic>? headers}) async {
+    return await client.delete(endPoint: endPoint, data: data, headers: headers);
   }
 
   @override
-  Future<Map<String, dynamic>> get({required String endPoint}) async {
+  Future<Map<String, dynamic>> get(
+      {required String endPoint, Map<String, dynamic>? headers}) async {
     return await client.get(endPoint: endPoint);
   }
 
   @override
   Future<Map<String, dynamic>?> patch(
-      {required String endPoint, Map<String, dynamic>? data}) async {
-    return await client.patch(endPoint: endPoint, data: data);
+      {required String endPoint,
+      Map<String, dynamic>? data,
+      Map<String, dynamic>? headers}) async {
+    return await client.patch(endPoint: endPoint, data: data, headers: headers);
   }
 
   @override
   Future<Map<String, dynamic>?> post(
-      {required String endPoint, Map<String, dynamic>? data}) async {
-    return await client.post(endPoint: endPoint, data: data);
+      {required String endPoint,
+      Map<String, dynamic>? data,
+      Map<String, dynamic>? headers}) async {
+    return await client.post(endPoint: endPoint, data: data, headers: headers);
   }
 
   @override
   Future<Map<String, dynamic>?> put(
-      {required String endPoint, Map<String, dynamic>? data}) async {
-    return await client.put(endPoint: endPoint, data: data);
+      {required String endPoint,
+      Map<String, dynamic>? data,
+      Map<String, dynamic>? headers}) async {
+    return await client.put(endPoint: endPoint, data: data, headers: headers);
   }
 }

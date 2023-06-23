@@ -1,7 +1,7 @@
 import 'package:todo_list/src/domain/models/task.dart';
 
 
-abstract interface class TodoApiHandler{
+abstract interface class TodoApi{
 
   Future<Task> get(String id);
 

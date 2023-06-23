@@ -41,6 +41,9 @@ dependencies:
   intl: ^0.18.0
   logger: ^1.4.0
   uuid: ^3.0.7
+  sqflite: ^2.2.8+4
+  sqflite_common_ffi: ^2.2.5 #for unit tests
+  path: ^1.8.3
 
 
 

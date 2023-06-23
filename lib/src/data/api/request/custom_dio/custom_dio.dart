@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:todo_list/src/data/api/request/custom_dio/exceptions/custom_dio_exception.dart';
@@ -14,9 +15,15 @@ class CustomDio implements HttpClient {
 
   @override
   Future<Map<String, dynamic>> delete(
-      {required String endPoint, Map<String, dynamic>? data}) async {
+      {required String endPoint,
+      Map<String, dynamic>? data,
+      Map<String, dynamic>? headers}) async {
     try {
-      Log.i("Данные для отправки: ${jsonEncode(data)}");
+      Log.i("Данные для отправки: header: $headers, data: ${jsonEncode(data)}");
+
+      if(headers != null){
+        _dio.options.headers.addAll(headers);
+      }
 
       Response response = await _dio.delete(
         '$url/$endPoint',
@@ -33,16 +40,36 @@ class CustomDio implements HttpClient {
   }
 
   @override
-  Future<Map<String, dynamic>> get({required String endPoint}) async {
-    Response response = await _dio.get('$url/$endPoint');
-    return response.data;
+  Future<Map<String, dynamic>> get(
+      {required String endPoint, Map<String, dynamic>? headers}) async {
+    try {
+      if(headers != null){
+        _dio.options.headers.addAll(headers);
+      }
+      Response response = await _dio.get('$url/$endPoint');
+
+      Log.i("Данные получены: ${response.data}");
+
+      return response.data;
+    } catch (exception, stackTrace) {
+      exceptionHandler(exception, stackTrace);
+
+      //todo: убрать
+      throw 'WHAT?';
+    }
   }
 
   @override
   Future<Map<String, dynamic>> patch(
-      {required String endPoint, Map<String, dynamic>? data}) async {
+      {required String endPoint,
+      Map<String, dynamic>? data,
+      Map<String, dynamic>? headers}) async {
     try {
-      Log.i("Данные для отправки: ${jsonEncode(data)}");
+      Log.i("Данные для отправки: header: $headers, data: ${jsonEncode(data)}");
+
+      if(headers != null){
+        _dio.options.headers.addAll(headers);
+      }
 
       Response response = await _dio.patch(
         '$url/$endPoint',
@@ -58,12 +85,17 @@ class CustomDio implements HttpClient {
     }
   }
 
-
   @override
   Future<Map<String, dynamic>> post(
-      {required String endPoint, Map<String, dynamic>? data}) async {
+      {required String endPoint,
+      Map<String, dynamic>? data,
+      Map<String, dynamic>? headers}) async {
     try {
-      Log.i("Данные для отправки: ${jsonEncode(data)}");
+      Log.i("Данные для отправки: header: $headers, data: ${jsonEncode(data)}");
+
+      if(headers != null){
+        _dio.options.headers.addAll(headers);
+      }
 
       Response response = await _dio.post(
         '$url/$endPoint',
@@ -81,9 +113,15 @@ class CustomDio implements HttpClient {
 
   @override
   Future<Map<String, dynamic>> put(
-      {required String endPoint, Map<String, dynamic>? data}) async {
+      {required String endPoint,
+      Map<String, dynamic>? data,
+      Map<String, dynamic>? headers}) async {
     try {
-      Log.i("Данные для отправки: ${jsonEncode(data)}");
+      Log.i("Данные для отправки: header: $headers, data: ${jsonEncode(data)}");
+
+      if(headers != null){
+        _dio.options.headers.addAll(headers);
+      }
 
       Response response = await _dio.put(
         '$url/$endPoint',
@@ -99,11 +137,8 @@ class CustomDio implements HttpClient {
     }
   }
 
-
   @override
   exceptionHandler(Object exception, StackTrace stackTrace) {
-    //Log.e(exception.toString(), '', stackTrace);
-
     if (exception is DioException) {
       switch (exception.type) {
         case DioExceptionType.badResponse:
@@ -112,7 +147,12 @@ class CustomDio implements HttpClient {
           }
         case DioExceptionType.unknown:
           {
-            throw UnimplementedError();
+            if (exception.error.runtimeType == SocketException) {
+              throw CustomDioException(
+                'Возникли проблемы с сетью',
+                stackTrace: stackTrace,
+              );
+            }
           }
         case DioExceptionType.connectionError:
           {
@@ -166,16 +206,18 @@ class CustomDio implements HttpClient {
       case 500:
         {
           Log.e(response.data);
-          throw CustomDioException('Потеряна связь с сервером',
-              statusCode: response.statusCode,
+          throw CustomDioException(
+            'Потеряна связь с сервером',
+            statusCode: response.statusCode,
             stackTrace: StackTrace.current,
           );
         }
       default:
         {
           Log.e(response.data);
-          throw CustomDioException('Неизвестная ошибка',
-              statusCode: response.statusCode,
+          throw CustomDioException(
+            'Неизвестная ошибка',
+            statusCode: response.statusCode,
             stackTrace: StackTrace.current,
           );
         }

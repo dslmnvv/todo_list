@@ -1,34 +1,41 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:todo_list/src/data/profile/profile.dart';
+import 'package:todo_list/src/application/profile/profile.dart';
 import 'package:todo_list/src/domain/models/task.dart';
 import 'package:uuid/uuid.dart';
 
-void main(){
+void main() async{
 
-  Profile.init();
+  var profile =  await Profile().getInstance();
+
+  List<Task> tasks = [];
+  late Task checkTask;
 
   test('Test todoYandexAPI getAll', ()  async {
 
-    var tasks = await Profile.todoYandexApi.getAll();
+    tasks = await profile.todoController.rest.getAll();
+
+    checkTask = tasks.first;
 
     expect(List<Task>, tasks.runtimeType);
 
   });
 
+
+
   test('Test todoYandexAPI get', ()  async {
 
-    Task task = await Profile.todoYandexApi.get('4');
+    Task task = await profile.todoController.rest.get(checkTask.id);
 
-    expect(Task, task.runtimeType);
+    expect(checkTask, task);
 
   });
 
   test('Test todoYandexAPI add', ()  async {
 
-    await Profile.todoYandexApi.add(
+    await profile.todoController.rest.add(
       Task(
           id: Uuid().v1(),
-          text: "Тестовое добавление",
+          text: "Тестовый вариант",
           changeAt: DateTime.now(),
           createdAt: DateTime.now(),
           lastUpdateBy: 'test',
@@ -40,13 +47,13 @@ void main(){
 
   test('Test todoYandexAPI change Task', ()  async {
 
-    await Profile.todoYandexApi.change(
-      '1234',
+    await profile.todoController.rest.change(
+      checkTask.id,
       Task(
-        id: '3',
-        text: "Тестовый put",
+        id: checkTask.id,
+        text: "Изменил данные для него",
         changeAt: DateTime.now(),
-        createdAt: DateTime.now(),
+        createdAt: checkTask.createdAt,
         lastUpdateBy: 'test',
         importance: Priority.basic,
       ),
@@ -56,16 +63,14 @@ void main(){
 
   test('Test todoYandexAPI delete Task', ()  async {
 
-    await Profile.todoYandexApi.delete(
-      'a8e29e80-10f5-11ee-ad5f-83a55505879b',
-    );
+    await profile.todoController.rest.delete(checkTask.id);
 
   });
 
 
   test('Test todoYandexAPI replaceAll Task', ()  async {
 
-    await Profile.todoYandexApi.replaceAll(
+    await profile.todoController.rest.replaceAll(
       [
         Task(
           id: Uuid().v1(),

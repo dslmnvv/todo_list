@@ -63,6 +63,22 @@ class Task {
     );
   }
 
+  factory Task.fromSql(Map<String, dynamic> json) {
+    Log.i('$json');
+    return Task(
+      id: json["uuid"],
+      text: json["description"],
+      lastUpdateBy: json["last_updated_by"],
+      importance: Priority.values.byName(json["importance"]),
+      deadline:  (json["deadline"] != null)
+          ? DateTime.parse(json["deadline"])
+          : null,
+      changeAt: DateTime.parse(json["changed_at"]),
+      createdAt: DateTime.parse(json["created_at"]),
+      done: (json["done"] == 1) ? true : false,
+    );
+  }
+
 
   Map<String, dynamic> toJson() {
     return {
@@ -74,6 +90,19 @@ class Task {
       "changed_at": this.changeAt.microsecondsSinceEpoch,
       "created_at": this.createdAt.microsecondsSinceEpoch,
       "done": this.done,
+    };
+  }
+
+  Map<String, dynamic> toSQLRequest() {
+    return {
+      "uuid": this.id,
+      "description": this.text,
+      "last_updated_by": this.lastUpdateBy,
+      "importance": this.importance.name,
+      "deadline": this.deadline?.toIso8601String(),
+      "changed_at": this.changeAt.toIso8601String(),
+      "created_at": this.createdAt.toIso8601String(),
+      "done": (done) ? 1 : 0,
     };
   }
 
@@ -102,4 +131,31 @@ class Task {
         'done: $done \n'
         '}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Task &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          text == other.text &&
+          lastUpdateBy == other.lastUpdateBy &&
+          importance == other.importance &&
+          deadline == other.deadline &&
+          changeAt == other.changeAt &&
+          createdAt == other.createdAt &&
+          done == other.done;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      text.hashCode ^
+      lastUpdateBy.hashCode ^
+      importance.hashCode ^
+      deadline.hashCode ^
+      changeAt.hashCode ^
+      createdAt.hashCode ^
+      done.hashCode;
+
+
 }

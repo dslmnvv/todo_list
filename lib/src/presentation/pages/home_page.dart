@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/src/domain/models/task.dart';
@@ -8,93 +7,116 @@ import 'package:todo_list/src/presentation/providers/home_provider.dart';
 import 'package:todo_list/src/presentation/style/style_library.dart';
 import 'package:todo_list/src/presentation/style/theme/style_theme.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   static const String routeName = 'homePage';
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+
+  @override
+  void initState() {
+    context.read<HomeProvider>().initProfile();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var state = context.watch<HomeProvider>();
-    return Scaffold(
-      body: CustomScrollView(
-        physics: const AlwaysScrollableScrollPhysics(
-            parent: BouncingScrollPhysics()),
-        slivers: <Widget>[
-          AppBar(
-            title: 'Мои дела',
-            subTitle: 'Выполнено - ${state.complete}',
-            onTapEye: state.showAllTasks,
-          ),
-          (state.tasks.isNotEmpty)
-              ? SliverPadding(
-                  padding: StyleLibrary.padding.content,
-                  sliver: SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      childCount: state.tasks.length + 1,
-                      (BuildContext context, int index) {
-                        if (index == state.tasks.length) {
-                          return Container(
-                            decoration: BoxDecoration(
-                                color:
-                                    Theme.of(context).colorScheme.backSecondary,
-                                borderRadius: const BorderRadius.only(
-                                    bottomLeft: Radius.circular(8),
-                                    bottomRight: Radius.circular(8))),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const SizedBox(
-                                  width: 50,
-                                ),
-                                TextButton(
-                                  onPressed: state.openAddTaskPage,
-                                  child: Text(
-                                    'Новое',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineMedium
-                                        ?.copyWith(
-                                          color: StyleLibrary.color.tertiary,
-                                        ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }
 
-                        return DismissibleCard(
-                            index: index,
-                            len: state.tasks.length,
-                            task: state.tasks.elementAt(index),
-                            onDismiss: () =>
-                                state.removeTask(state.tasks.elementAt(index)),
-                            onChangeStatus: state.changeStatusTask,
-                            openChangeTask: () => state.openChangeTaskPage(
-                                  index,
-                                ));
-                      },
+    if(state.waitStatus){
+      return Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    return Scaffold(
+      body: RefreshIndicator(
+        onRefresh: state.refreshTask,
+        child: CustomScrollView(
+          physics: const AlwaysScrollableScrollPhysics(
+              parent: BouncingScrollPhysics()),
+          slivers: <Widget>[
+            AppBar(
+              title: 'Мои дела',
+              subTitle: 'Выполнено - ${state.complete}',
+              onTapEye: state.showAllTasks,
+            ),
+            (state.tasks.isNotEmpty)
+                ? SliverPadding(
+                    padding: StyleLibrary.padding.content,
+                    sliver: SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        childCount: state.tasks.length + 1,
+                        (BuildContext context, int index) {
+                          if (index == state.tasks.length) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                  color:
+                                      Theme.of(context).colorScheme.backSecondary,
+                                  borderRadius: const BorderRadius.only(
+                                      bottomLeft: Radius.circular(8),
+                                      bottomRight: Radius.circular(8))),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    width: 50,
+                                  ),
+                                  TextButton(
+                                    onPressed: state.openAddTaskPage,
+                                    child: Text(
+                                      'Новое',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineMedium
+                                          ?.copyWith(
+                                            color: StyleLibrary.color.tertiary,
+                                          ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+
+                          return DismissibleCard(
+                              index: index,
+                              len: state.tasks.length,
+                              task: state.tasks.elementAt(index),
+                              onDismiss: () =>
+                                  state.removeTask(state.tasks.elementAt(index)),
+                              onChangeStatus: state.changeStatusTask,
+                              openChangeTask: () => state.openChangeTaskPage(
+                                    index,
+                                  ));
+                        },
+                      ),
                     ),
-                  ),
-                )
-              : SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height / 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Ура, все дела выполнены  🥳',
-                          style: Theme.of(context).textTheme.titleMedium,
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+                  )
+                : SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height / 2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Ура, все дела выполнены  🥳',
+                            style: Theme.of(context).textTheme.titleMedium,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                )
-        ],
+                  )
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: state.openAddTaskPage,
@@ -222,12 +244,11 @@ class _DismissibleCardState extends State<DismissibleCard> {
             ),
           )),
       onDismissed: (direction) {
-        if(direction.name == 'startToEnd'){
+        if (direction.name == 'startToEnd') {
           widget.onChangeStatus(true, widget.index);
-        }else{
+        } else {
           widget.onDismiss();
         }
-
       },
       child: TaskCard(
         index: widget.index,
@@ -297,20 +318,21 @@ class _TaskCardState extends State<TaskCard> {
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
-
             children: [
               Stack(
                 children: [
                   Checkbox(
                     fillColor: (widget.task.importance == Priority.important)
-                        ? Theme.of(context).colorScheme.highPrioryCheckBox.fillColor
+                        ? Theme.of(context)
+                            .colorScheme
+                            .highPrioryCheckBox
+                            .fillColor
                         : Theme.of(context).checkboxTheme.fillColor,
                     side: (widget.task.importance == Priority.important)
                         ? Theme.of(context).colorScheme.highPrioryCheckBox.side
                         : Theme.of(context).checkboxTheme.side,
                     value: isComplete,
                     onChanged: changeStatus,
-
                   ),
                 ],
               ),

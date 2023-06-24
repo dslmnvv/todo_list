@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_list/src/_common/log_handler.dart';
 import 'package:todo_list/src/data/api/storage/sql/sql_storage.dart';
 import 'package:todo_list/src/data/api/storage/storage.dart';
@@ -6,11 +7,16 @@ import 'package:todo_list/src/domain/models/task.dart';
 
 class YandexTodoStorage implements TodoApi{
 
+  static const revisionKey = 'revision';
+
+  @override
+  int revision;
+
   Storage _storage;
   String key;
   String by;
 
-  YandexTodoStorage(this._storage, {required this.key, required this.by});
+  YandexTodoStorage(this._storage, {required this.key, required this.by, required this.revision});
 
   @override
   Future<void> add(Task task) async {
@@ -19,6 +25,7 @@ class YandexTodoStorage implements TodoApi{
     }else{
       await _storage.add(key: key, data: task.toJson());
     }
+    await changeRevision();
   }
 
   @override
@@ -27,26 +34,32 @@ class YandexTodoStorage implements TodoApi{
 
     if(_storage.runtimeType == SqlStorage){
 
-      id = '"$id"';
+      id = "'$id'";
 
       _storage.replace(key: key, value: id, by: by, replaceData: task.toSQLRequest());
     }else{
       _storage.replace(key: key, value:  id, by: by, replaceData: task.toJson());
     }
 
+    await changeRevision();
 
   }
 
   @override
   Future<void> delete(String id)  async{
     if(_storage.runtimeType == SqlStorage){
+      Log.w('Все элементы  = ${await _storage.getAll(key: key)}');
+      
+      id = "'$id'";
 
-      id = '"$id"';
+      Log.w('Удаляю элемен с id = $id');
 
       await _storage.remove(key: key, value: id, by: by);
     }else{
       await _storage.remove(key: key,value: id, by: by);
     }
+
+    await changeRevision();
   }
 
   @override
@@ -56,7 +69,7 @@ class YandexTodoStorage implements TodoApi{
     if(_storage.runtimeType == SqlStorage){
 
       //временное решени, пока не придумал, как проверять тип для sqlflite
-      id = '"$id"';
+      id = "'$id'";
 
       var data = await _storage.get(key: key, value: id, by: by);
       return Task.fromSql(data);
@@ -90,6 +103,25 @@ class YandexTodoStorage implements TodoApi{
           data: List.of(tasks).map((e) => e.toJson()).toList()
       );
     }
+    await changeRevision();
   }
+
+  @override
+  Future<void> onErrorHandler(Object exception) {
+    // TODO: implement onErrorHandler
+    throw UnimplementedError();
+  }
+
+
+
+  Future<void> changeRevision() async{
+    revision++;
+    // Для облегчения обработки ревизии
+    var localStorage = await SharedPreferences.getInstance();
+    localStorage.setInt(revisionKey, revision);
+
+  }
+
+
 
 }

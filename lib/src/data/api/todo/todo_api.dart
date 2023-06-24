@@ -3,6 +3,8 @@ import 'package:todo_list/src/domain/models/task.dart';
 
 abstract interface class TodoApi{
 
+  late int revision;
+
   Future<Task> get(String id);
 
   Future<void> add(Task task);
@@ -14,6 +16,9 @@ abstract interface class TodoApi{
   Future<List<Task>> getAll();
 
   Future<void> replaceAll(List<Task> tasks);
+
+
+  Future<void> onErrorHandler(Object exception);
 
 
 

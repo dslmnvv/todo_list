@@ -15,7 +15,7 @@ void main() async{
   List<Task> tasks = [];
   late Task checkTask;
 
-  test('Test todoYandexAPI getAll', ()  async {
+  test('Test Storage getAll', ()  async {
 
     tasks = await profile.todoController.storage.getAll();
 
@@ -27,7 +27,7 @@ void main() async{
 
 
 
-  test('Test todoYandexAPI get', ()  async {
+  test('Test Storage get', ()  async {
 
     Task task = await profile.todoController.storage.get(checkTask.id);
 
@@ -35,7 +35,7 @@ void main() async{
 
   });
 
-  test('Test todoYandexAPI add', ()  async {
+  test('Test Storage add', ()  async {
 
     await profile.todoController.storage.add(
       Task(
@@ -50,7 +50,7 @@ void main() async{
 
   });
 
-  test('Test todoYandexAPI change Task', ()  async {
+  test('Test Storage change Task', ()  async {
 
     await profile.todoController.storage.change(
       checkTask.id,
@@ -66,14 +66,14 @@ void main() async{
 
   });
 
-  test('Test todoYandexAPI delete Task', ()  async {
+  test('Test Storage delete Task', ()  async {
 
     await profile.todoController.storage.delete(checkTask.id);
 
   });
 
 
-  test('Test todoYandexAPI replaceAll Task', ()  async {
+  test('Test Storage replaceAll Task', ()  async {
 
     await profile.todoController.storage.replaceAll(
         [

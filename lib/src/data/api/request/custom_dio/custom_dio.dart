@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:todo_list/src/data/api/request/custom_dio/exceptions/custom_dio_exception.dart';
+import 'package:todo_list/src/data/api/request/custom_dio/exceptions/internet_fail_exception.dart';
 import 'package:todo_list/src/data/api/request/http_client.dart';
 
 import '../../../../_common/log_handler.dart';
@@ -21,7 +22,7 @@ class CustomDio implements HttpClient {
     try {
       Log.i("Данные для отправки: header: $headers, data: ${jsonEncode(data)}");
 
-      if(headers != null){
+      if (headers != null) {
         _dio.options.headers.addAll(headers);
       }
 
@@ -43,7 +44,7 @@ class CustomDio implements HttpClient {
   Future<Map<String, dynamic>> get(
       {required String endPoint, Map<String, dynamic>? headers}) async {
     try {
-      if(headers != null){
+      if (headers != null) {
         _dio.options.headers.addAll(headers);
       }
       Response response = await _dio.get('$url/$endPoint');
@@ -67,7 +68,7 @@ class CustomDio implements HttpClient {
     try {
       Log.i("Данные для отправки: header: $headers, data: ${jsonEncode(data)}");
 
-      if(headers != null){
+      if (headers != null) {
         _dio.options.headers.addAll(headers);
       }
 
@@ -93,7 +94,7 @@ class CustomDio implements HttpClient {
     try {
       Log.i("Данные для отправки: header: $headers, data: ${jsonEncode(data)}");
 
-      if(headers != null){
+      if (headers != null) {
         _dio.options.headers.addAll(headers);
       }
 
@@ -119,7 +120,7 @@ class CustomDio implements HttpClient {
     try {
       Log.i("Данные для отправки: header: $headers, data: ${jsonEncode(data)}");
 
-      if(headers != null){
+      if (headers != null) {
         _dio.options.headers.addAll(headers);
       }
 
@@ -148,35 +149,47 @@ class CustomDio implements HttpClient {
         case DioExceptionType.unknown:
           {
             if (exception.error.runtimeType == SocketException) {
-              throw CustomDioException(
-                'Возникли проблемы с сетью',
-                stackTrace: stackTrace,
+              throw InternetFailException(
+                'Возникли проблемы с сетью. '
+                'Возможно нет подключения к интернету',
               );
             }
           }
         case DioExceptionType.connectionError:
           {
-            throw UnimplementedError();
+            throw InternetFailException(
+              'Возникли проблемы с сервером',
+            );
           }
         case DioExceptionType.cancel:
           {
-            throw UnimplementedError();
+            throw InternetFailException(
+              'Доступ к контенту запрещен',
+            );
           }
         case DioExceptionType.badCertificate:
           {
-            throw UnimplementedError();
+            throw InternetFailException(
+              'Возникли проблемы с сервером',
+            );
           }
         case DioExceptionType.receiveTimeout:
           {
-            throw UnimplementedError();
+            throw InternetFailException(
+              'Возникли проблемы с сервером',
+            );
           }
         case DioExceptionType.sendTimeout:
           {
-            throw UnimplementedError();
+            throw InternetFailException(
+              'Возникли проблемы с сервером',
+            );
           }
         case DioExceptionType.connectionTimeout:
           {
-            throw UnimplementedError();
+            throw InternetFailException(
+              'Возникли проблемы с сетью',
+            );
           }
       }
     }

@@ -1,4 +1,6 @@
 import 'package:todo_list/src/_common/log_handler.dart';
+import 'package:todo_list/src/data/api/request/custom_dio/exceptions/internet_fail_exception.dart';
+import 'package:todo_list/src/data/api/request/exceptions/http_client_exception.dart';
 import 'package:todo_list/src/data/api/rest/rest.dart';
 import 'package:todo_list/src/data/api/todo/todo_api.dart';
 import 'package:todo_list/src/domain/models/task.dart';
@@ -11,10 +13,13 @@ class YandexTodoRest implements TodoApi {
     _revision = value;
   }
 
+  int get revision => _revision;
+
   YandexTodoRest({required this.rest});
 
   @override
   Future<Task> get(String id) async {
+
     Map<String, dynamic> data = await rest.get(endPoint: '/list/$id');
 
     Log.i('Получены данные: $data');
@@ -28,6 +33,8 @@ class YandexTodoRest implements TodoApi {
 
   @override
   Future<void> add(Task task) async {
+
+
     Map<String, dynamic>? data = await rest.post(endPoint: '/list/', headers: {
       'X-Last-Known-Revision': _revision,
     }, data: {
@@ -94,13 +101,33 @@ class YandexTodoRest implements TodoApi {
 
   @override
   Future<void> replaceAll(List<Task> tasks) async {
-    await rest.patch(endPoint: '/list/', headers: {
+   var data = await rest.patch(endPoint: '/list/', headers: {
       'X-Last-Known-Revision': _revision,
     }, data: {
       'list': tasks,
     });
 
+   if(data != null){
+     revision = data['revision'];
+
+     Log.i('Обновлена ревизия: $_revision');
+   }
 
     Log.i('Все данные заменены: $tasks');
+  }
+
+  @override
+  Future<void> onErrorHandler(Object exception) {
+
+    if(exception is InternetFailException){
+      Log.w(exception.message);
+    }
+
+    if(exception is HttpClientException){
+      Log.e(exception.message);
+    }
+
+    throw exception;
+
   }
 }

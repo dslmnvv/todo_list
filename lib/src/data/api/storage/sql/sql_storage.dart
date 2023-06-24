@@ -1,4 +1,4 @@
-import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:todo_list/src/data/api/storage/storage.dart';
 import '../../../../_common/log_handler.dart';
 import 'exceptions/sql_storage_exception.dart';
@@ -29,6 +29,15 @@ class SqlStorage implements Storage {
   @override
   Future<void> remove(
       {required String key, required String value, required String by}) async {
+
+    var data = await get(key: key, value: value, by: by);
+    Log.w('Полученные данные---> key: $key,value: $value, by: $by');
+
+
+    Log.w('Данные для удаления ---> key: $key,value: $value, by: $by');
+
+
+
     var result = await database.delete(key, where: '$by=$value');
 
     if(result == 0){

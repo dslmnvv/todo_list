@@ -10,7 +10,7 @@ void main() async{
   List<Task> tasks = [];
   late Task checkTask;
 
-  test('Test todoYandexAPI getAll', ()  async {
+  test('Test todoController getAll', ()  async {
 
     tasks = await profile.todoController.rest.getAll();
 
@@ -22,7 +22,7 @@ void main() async{
 
 
 
-  test('Test todoYandexAPI get', ()  async {
+  test('Test todoController get', ()  async {
 
     Task task = await profile.todoController.rest.get(checkTask.id);
 
@@ -30,7 +30,7 @@ void main() async{
 
   });
 
-  test('Test todoYandexAPI add', ()  async {
+  test('Test todoController add', ()  async {
 
     await profile.todoController.rest.add(
       Task(
@@ -45,7 +45,7 @@ void main() async{
 
   });
 
-  test('Test todoYandexAPI change Task', ()  async {
+  test('Test todoController change Task', ()  async {
 
     await profile.todoController.rest.change(
       checkTask.id,
@@ -61,14 +61,14 @@ void main() async{
 
   });
 
-  test('Test todoYandexAPI delete Task', ()  async {
+  test('Test todoController delete Task', ()  async {
 
     await profile.todoController.rest.delete(checkTask.id);
 
   });
 
 
-  test('Test todoYandexAPI replaceAll Task', ()  async {
+  test('Test todoController replaceAll Task', ()  async {
 
     await profile.todoController.rest.replaceAll(
       [

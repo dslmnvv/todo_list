@@ -30,9 +30,10 @@ class AddTaskPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (context) => AddTaskProvider(task ?? Task.empty(
-          id: const Uuid().v1()
-        )),
+        create: (context) =>
+            AddTaskProvider(task ?? Task.empty(
+                id: const Uuid().v1(),
+            )),
         child: Builder(
           builder: (context) {
             var state = context.watch<AddTaskProvider>();
@@ -54,7 +55,7 @@ class AddTaskPage extends StatelessWidget {
                       onPressed: (task != null && index != null)
                           ? () => state.change(index!, task!)
                           : state.save,
-                      child:  Text(AppLocalizations.of(context)!.save),
+                      child: Text(AppLocalizations.of(context)!.save),
                     ),
                   ),
                 ),
@@ -161,7 +162,8 @@ class _PriorityContainerState extends State<PriorityContainer> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(AppLocalizations.of(context)!.importance, style: Theme.of(context).textTheme.bodyMedium),
+        Text(AppLocalizations.of(context)!.importance,
+            style: Theme.of(context).textTheme.bodyMedium),
         StyleLibrary.padding.hBoxMini,
         DropdownButton(
           underline: const SizedBox(),
@@ -265,7 +267,8 @@ class _DatePickerContainerState extends State<DatePickerContainer> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(AppLocalizations.of(context)!.makeUp, style: Theme.of(context).textTheme.bodyMedium),
+            Text(AppLocalizations.of(context)!.makeUp,
+                style: Theme.of(context).textTheme.bodyMedium),
             (useDate)
                 ? TextButton(
                     style: TextButton.styleFrom(padding: EdgeInsets.zero),

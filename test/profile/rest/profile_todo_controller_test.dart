@@ -1,10 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:todo_list/src/application/profile/profile.dart';
-import 'package:todo_list/src/const/api/storage/sql/database_const.dart';
 import 'package:todo_list/src/domain/models/task.dart';
 import 'package:uuid/uuid.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 
 void main() async{
@@ -39,7 +36,7 @@ void main() async{
 
     await profile.todoController.add(
       Task(
-        id: Uuid().v1(),
+        id: const Uuid().v1(),
         text: "Тестовый вариант",
         changeAt: DateTime.now(),
         createdAt: DateTime.now(),
@@ -78,7 +75,7 @@ void main() async{
     await profile.todoController.replaceAll(
         [
           Task(
-            id: Uuid().v1(),
+            id: const Uuid().v1(),
             text: "Тестовый replace 1",
             changeAt: DateTime.now(),
             createdAt: DateTime.now(),
@@ -86,7 +83,7 @@ void main() async{
             importance: Priority.basic,
           ),
           Task(
-            id: Uuid().v1(),
+            id: const Uuid().v1(),
             text: "Тестовый replace 2",
             changeAt: DateTime.now(),
             createdAt: DateTime.now(),
@@ -94,7 +91,7 @@ void main() async{
             importance: Priority.basic,
           ),
           Task(
-            id: Uuid().v1(),
+            id: const Uuid().v1(),
             text: "Тестовый replace 3",
             changeAt: DateTime.now(),
             createdAt: DateTime.now(),

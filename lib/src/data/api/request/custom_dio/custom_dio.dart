@@ -10,7 +10,7 @@ import '../../../../_common/log_handler.dart';
 
 class CustomDio implements HttpClient {
   String url;
-  Dio _dio;
+  final Dio _dio;
 
   CustomDio(this._dio, {required this.url});
 

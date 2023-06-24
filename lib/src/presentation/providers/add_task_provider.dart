@@ -65,9 +65,14 @@ class AddTaskProvider with ChangeNotifier {
                 textAlign: TextAlign.center,
               ),
               actions: [
-                TextButton(onPressed: NavigationService.pop, child: Text('ок')),
                 TextButton(
-                    onPressed: NavigationService.pop, child: Text('ну ок')),
+                  onPressed: NavigationService.pop,
+                  child: Text('ок'),
+                ),
+                TextButton(
+                  onPressed: NavigationService.pop,
+                  child: Text('ну ок'),
+                ),
               ],
             );
           });

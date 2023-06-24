@@ -34,7 +34,7 @@ void main() async{
 
     await profile.todoController.rest.add(
       Task(
-          id: Uuid().v1(),
+          id: const Uuid().v1(),
           text: "Тестовый вариант",
           changeAt: DateTime.now(),
           createdAt: DateTime.now(),
@@ -73,7 +73,7 @@ void main() async{
     await profile.todoController.rest.replaceAll(
       [
         Task(
-          id: Uuid().v1(),
+          id: const Uuid().v1(),
           text: "Тестовый replace 1",
           changeAt: DateTime.now(),
           createdAt: DateTime.now(),
@@ -81,7 +81,7 @@ void main() async{
           importance: Priority.basic,
         ),
         Task(
-          id: Uuid().v1(),
+          id: const Uuid().v1(),
           text: "Тестовый replace 2",
           changeAt: DateTime.now(),
           createdAt: DateTime.now(),
@@ -89,7 +89,7 @@ void main() async{
           importance: Priority.basic,
         ),
         Task(
-          id: Uuid().v1(),
+          id: const Uuid().v1(),
           text: "Тестовый replace 3",
           changeAt: DateTime.now(),
           createdAt: DateTime.now(),

@@ -18,8 +18,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-
   @override
   void initState() {
     context.read<HomeProvider>().initProfile();
@@ -28,11 +26,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
-
     var state = context.watch<HomeProvider>();
 
-    if(state.waitStatus){
+    if (state.waitStatus) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       );
@@ -47,7 +43,8 @@ class _HomePageState extends State<HomePage> {
           slivers: <Widget>[
             AppBar(
               title: AppLocalizations.of(context)!.myTasks,
-              subTitle: '${AppLocalizations.of(context)!.done} - ${state.complete}',
+              subTitle:
+                  '${AppLocalizations.of(context)!.done} - ${state.complete}',
               onTapEye: state.showAllTasks,
             ),
             (state.tasks.isNotEmpty)
@@ -60,8 +57,9 @@ class _HomePageState extends State<HomePage> {
                           if (index == state.tasks.length) {
                             return Container(
                               decoration: BoxDecoration(
-                                  color:
-                                      Theme.of(context).colorScheme.backSecondary,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .backSecondary,
                                   borderRadius: const BorderRadius.only(
                                       bottomLeft: Radius.circular(8),
                                       bottomRight: Radius.circular(8))),
@@ -92,8 +90,8 @@ class _HomePageState extends State<HomePage> {
                               index: index,
                               len: state.tasks.length,
                               task: state.tasks.elementAt(index),
-                              onDismiss: () =>
-                                  state.removeTask(state.tasks.elementAt(index)),
+                              onDismiss: () => state
+                                  .removeTask(state.tasks.elementAt(index)),
                               onChangeStatus: state.changeStatusTask,
                               openChangeTask: () => state.openChangeTaskPage(
                                     index,

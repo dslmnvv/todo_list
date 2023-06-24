@@ -9,17 +9,18 @@ class YandexTodoRest implements TodoApi {
   Rest rest;
   late int _revision;
 
+  @override
   set revision(int value) {
     _revision = value;
   }
 
+  @override
   int get revision => _revision;
 
   YandexTodoRest({required this.rest});
 
   @override
   Future<Task> get(String id) async {
-
     Map<String, dynamic> data = await rest.get(endPoint: '/list/$id');
 
     Log.i('Получены данные: $data');
@@ -33,19 +34,17 @@ class YandexTodoRest implements TodoApi {
 
   @override
   Future<void> add(Task task) async {
-
-
     Map<String, dynamic>? data = await rest.post(endPoint: '/list/', headers: {
       'X-Last-Known-Revision': _revision,
     }, data: {
       "element": task.toJson(),
     });
 
-   if(data != null){
-     revision = data['revision'];
+    if (data != null) {
+      revision = data['revision'];
 
-     Log.i('Обновлена ревизия: $_revision');
-   }
+      Log.i('Обновлена ревизия: $_revision');
+    }
 
     Log.i('Добавлены данные: $data');
   }
@@ -60,12 +59,11 @@ class YandexTodoRest implements TodoApi {
       "element": task.toJson(),
     });
 
-    if(data != null){
+    if (data != null) {
       revision = data['revision'];
 
       Log.i('Обновлена ревизия: $_revision');
     }
-
   }
 
   @override
@@ -74,10 +72,10 @@ class YandexTodoRest implements TodoApi {
       headers: {
         'X-Last-Known-Revision': _revision,
       },
-      endPoint: '/list/${id}',
+      endPoint: '/list/$id',
     );
 
-    if(data != null){
+    if (data != null) {
       revision = data['revision'];
 
       Log.i('Обновлена ревизия: $_revision');
@@ -101,33 +99,31 @@ class YandexTodoRest implements TodoApi {
 
   @override
   Future<void> replaceAll(List<Task> tasks) async {
-   var data = await rest.patch(endPoint: '/list/', headers: {
+    var data = await rest.patch(endPoint: '/list/', headers: {
       'X-Last-Known-Revision': _revision,
     }, data: {
       'list': tasks,
     });
 
-   if(data != null){
-     revision = data['revision'];
+    if (data != null) {
+      _revision = data['revision'];
 
-     Log.i('Обновлена ревизия: $_revision');
-   }
+      Log.i('Обновлена ревизия: $_revision');
+    }
 
     Log.i('Все данные заменены: $tasks');
   }
 
   @override
   Future<void> onErrorHandler(Object exception) {
-
-    if(exception is InternetFailException){
+    if (exception is InternetFailException) {
       Log.w(exception.message);
     }
 
-    if(exception is HttpClientException){
+    if (exception is HttpClientException) {
       Log.e(exception.message);
     }
 
     throw exception;
-
   }
 }

@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'package:todo_list/src/const/api/device.dart';
+
 import '../../_common/log_handler.dart';
 
 enum Priority {
@@ -84,14 +85,14 @@ class Task {
 
   Map<String, dynamic> toJson() {
     return {
-      "id": this.id,
-      "text": this.text,
-      "last_updated_by": this.lastUpdateBy,
-      "importance": this.importance.name,
-      "deadline": this.deadline?.microsecondsSinceEpoch,
-      "changed_at": this.changeAt.microsecondsSinceEpoch,
-      "created_at": this.createdAt.microsecondsSinceEpoch,
-      "done": this.done,
+      "id": id,
+      "text": text,
+      "last_updated_by": lastUpdateBy,
+      "importance": importance.name,
+      "deadline": deadline?.microsecondsSinceEpoch,
+      "changed_at": changeAt.microsecondsSinceEpoch,
+      "created_at": createdAt.microsecondsSinceEpoch,
+      "done": done,
     };
   }
 
@@ -112,7 +113,7 @@ class Task {
     return Task(
       text: '',
       id: id,
-      lastUpdateBy: '',
+      lastUpdateBy: DeviceInfo.id,
       done: false,
       changeAt: DateTime.now(),
       createdAt: DateTime.now(),

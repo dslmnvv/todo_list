@@ -4,14 +4,15 @@ import 'package:todo_list/src/data/api/rest/rest.dart';
 class YandexApi implements Rest {
   HttpClient client;
 
-  YandexApi({required this.client}) {}
+  YandexApi({required this.client});
 
   @override
   Future<Map<String, dynamic>?> delete(
       {required String endPoint,
       Map<String, dynamic>? data,
       Map<String, dynamic>? headers}) async {
-    return await client.delete(endPoint: endPoint, data: data, headers: headers);
+    return await client.delete(
+        endPoint: endPoint, data: data, headers: headers);
   }
 
   @override

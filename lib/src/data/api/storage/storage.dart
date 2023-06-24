@@ -1,10 +1,8 @@
-
 /// ### Interface for defining the entity associated
 /// ### with adding data to the internal data store
 ///
 /// * [Map<String, dynamic>] is used for data exchange
 abstract interface class Storage {
-
   /// ## Define method for replace data.
   ///
   /// * [key] - storage key, where find element.
@@ -31,7 +29,6 @@ abstract interface class Storage {
       required String by,
       required Map<String, dynamic> replaceData});
 
-
   /// ## Define method for remove data.
   ///
   /// * [key] - storage key, where find element.
@@ -40,16 +37,15 @@ abstract interface class Storage {
   Future<void> remove(
       {required String key, required String value, required String by});
 
-
   /// ## Define method for get all data.
   ///
   /// * [key] - storage key, where find elements.
   Future<List<Map<String, dynamic>>> getAll({required String key});
 
-
   /// ## Define method for replace all data.
   ///
   /// * [key] - storage key, where replace elements.
   /// * [data] - replacement data
-  Future<void> replaceAll({required String key, required List<Map<String, dynamic>> data});
+  Future<void> replaceAll(
+      {required String key, required List<Map<String, dynamic>> data});
 }

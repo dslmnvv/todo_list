@@ -3,6 +3,9 @@ import 'package:todo_list/src/presentation/pages/home_page.dart';
 import 'package:todo_list/src/presentation/style/style_library.dart';
 import 'package:todo_list/src/routing/navigation_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localization.dart';
+
+import '../_common/l10n/s.dart';
 
 class TodoListApp extends StatelessWidget {
   const TodoListApp({super.key});
@@ -11,12 +14,13 @@ class TodoListApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
         GlobalMaterialLocalizations.delegate
       ],
-      supportedLocales: const [
-        Locale('en'),
-        Locale('ru'),
-      ],
+      supportedLocales: S.all,
       navigatorKey: NavigationService.navigatorKey,
       theme: StyleLibrary.theme.main,
       darkTheme: StyleLibrary.theme.main, //todo: изменить тему

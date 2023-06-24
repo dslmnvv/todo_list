@@ -6,6 +6,7 @@ import 'package:todo_list/src/presentation/pages/appbar/custom_app_bar.dart';
 import 'package:todo_list/src/presentation/providers/home_provider.dart';
 import 'package:todo_list/src/presentation/style/style_library.dart';
 import 'package:todo_list/src/presentation/style/theme/style_theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localization.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -27,10 +28,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+
     var state = context.watch<HomeProvider>();
 
     if(state.waitStatus){
-      return Scaffold(
+      return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       );
     }
@@ -43,8 +46,8 @@ class _HomePageState extends State<HomePage> {
               parent: BouncingScrollPhysics()),
           slivers: <Widget>[
             AppBar(
-              title: 'Мои дела',
-              subTitle: 'Выполнено - ${state.complete}',
+              title: AppLocalizations.of(context)!.myTasks,
+              subTitle: '${AppLocalizations.of(context)!.done} - ${state.complete}',
               onTapEye: state.showAllTasks,
             ),
             (state.tasks.isNotEmpty)
@@ -71,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                                   TextButton(
                                     onPressed: state.openAddTaskPage,
                                     child: Text(
-                                      'Новое',
+                                      AppLocalizations.of(context)!.newk,
                                       style: Theme.of(context)
                                           .textTheme
                                           .headlineMedium
@@ -107,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Ура, все дела выполнены  🥳',
+                            '${AppLocalizations.of(context)!.hooray} 🥳',
                             style: Theme.of(context).textTheme.titleMedium,
                             textAlign: TextAlign.center,
                           ),

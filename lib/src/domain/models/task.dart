@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import '../../_common/log_handler.dart';
 
 enum Priority {
@@ -9,8 +10,9 @@ enum Priority {
   const Priority(this.nameField);
 
   factory Priority.fromNameField(String name) {
+
     switch (name) {
-      case 'Низкий':
+      case  'Низкий':
         {
           return Priority.low;
         }
@@ -95,13 +97,13 @@ class Task {
 
   Map<String, dynamic> toSQLRequest() {
     return {
-      "uuid": this.id,
-      "description": this.text,
-      "last_updated_by": this.lastUpdateBy,
-      "importance": this.importance.name,
-      "deadline": this.deadline?.toIso8601String(),
-      "changed_at": this.changeAt.toIso8601String(),
-      "created_at": this.createdAt.toIso8601String(),
+      "uuid": id,
+      "description": text,
+      "last_updated_by": lastUpdateBy,
+      "importance": importance.name,
+      "deadline": deadline?.toIso8601String(),
+      "changed_at": changeAt.toIso8601String(),
+      "created_at": createdAt.toIso8601String(),
       "done": (done) ? 1 : 0,
     };
   }

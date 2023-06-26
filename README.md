@@ -11,6 +11,9 @@
 - Adding tasks
 - Setting task priority
 - Editing tasks
+- Synchronization data with the server
+- Saving data locally
+
 
 
 
@@ -23,4 +26,4 @@
 </p>
 
 ## Release
-- [last release apk](https://disk.yandex.ru/d/_pc9ZVnjiTrRLQ)
+- [last release apk](https://github.com/dslmnvv/todo_list/releases/download/not-stable/app-release.apk)

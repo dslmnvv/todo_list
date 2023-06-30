@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/src/domain/models/task.dart';
@@ -8,6 +6,8 @@ import 'package:todo_list/src/presentation/providers/add_task_provider.dart';
 import 'package:todo_list/src/presentation/style/style_library.dart';
 import 'package:todo_list/src/presentation/style/theme/style_theme.dart';
 import 'package:todo_list/src/routing/navigation_service.dart';
+import 'package:uuid/uuid.dart';
+import 'package:flutter_gen/gen_l10n/app_localization.dart';
 
 class TaskArgs {
   final Task? task;
@@ -30,7 +30,10 @@ class AddTaskPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (context) => AddTaskProvider(task ?? Task.empty()),
+        create: (context) =>
+            AddTaskProvider(task ?? Task.empty(
+                id: const Uuid().v1(),
+            )),
         child: Builder(
           builder: (context) {
             var state = context.watch<AddTaskProvider>();
@@ -52,12 +55,12 @@ class AddTaskPage extends StatelessWidget {
                       onPressed: (task != null && index != null)
                           ? () => state.change(index!, task!)
                           : state.save,
-                      child: const Text('Сохранить'),
+                      child: Text(AppLocalizations.of(context)!.save),
                     ),
                   ),
                 ),
                 body: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   child: Padding(
                     padding: StyleLibrary.padding.body,
                     child: Column(
@@ -65,19 +68,19 @@ class AddTaskPage extends StatelessWidget {
                       children: [
                         DescriptionField(
                           onChanged: state.onChanged,
-                          initialValue: task?.description,
+                          initialValue: task?.text,
                         ),
                         StyleLibrary.padding.hBox,
                         PriorityContainer(
                           onSelect: state.selectPriority,
-                          priority: task?.priority ?? Priority.none,
+                          priority: task?.importance ?? Priority.basic,
                         ),
                         const Divider(),
                         StyleLibrary.padding.hBox,
                         DatePickerContainer(
                           onSelect: state.selectDate,
                           onSwitch: state.switchDate,
-                          initialDate: task?.date,
+                          initialDate: task?.deadline,
                         ),
                         StyleLibrary.padding.hBox,
                         const Divider(),
@@ -118,7 +121,7 @@ class DescriptionField extends StatelessWidget {
           onChanged: onChanged,
           decoration: StyleLibrary.input.main.copyWith(
               fillColor: Theme.of(context).colorScheme.backSecondary,
-              hintText: 'Что надо сделать...',
+              hintText: AppLocalizations.of(context)!.whatNeed,
               hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: StyleLibrary.color.tertiary,
                   ))),
@@ -139,7 +142,7 @@ class PriorityContainer extends StatefulWidget {
 }
 
 class _PriorityContainerState extends State<PriorityContainer> {
-  Priority priority = Priority.none;
+  Priority priority = Priority.basic;
   late List<String> items;
   //late String current;
 
@@ -159,7 +162,8 @@ class _PriorityContainerState extends State<PriorityContainer> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Важность', style: Theme.of(context).textTheme.bodyMedium),
+        Text(AppLocalizations.of(context)!.importance,
+            style: Theme.of(context).textTheme.bodyMedium),
         StyleLibrary.padding.hBoxMini,
         DropdownButton(
           underline: const SizedBox(),
@@ -169,7 +173,7 @@ class _PriorityContainerState extends State<PriorityContainer> {
             var prior = Priority.fromNameField(value);
 
             switch (prior) {
-              case Priority.high:
+              case Priority.important:
                 {
                   return DropdownMenuItem<String>(
                       value: value,
@@ -263,7 +267,8 @@ class _DatePickerContainerState extends State<DatePickerContainer> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Сделать до', style: Theme.of(context).textTheme.bodyMedium),
+            Text(AppLocalizations.of(context)!.makeUp,
+                style: Theme.of(context).textTheme.bodyMedium),
             (useDate)
                 ? TextButton(
                     style: TextButton.styleFrom(padding: EdgeInsets.zero),
@@ -325,9 +330,9 @@ class DeleteButton extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.delete),
-            SizedBox(width: 10),
-            Text('Удалить',
+            const Icon(Icons.delete),
+            const SizedBox(width: 10),
+            Text(AppLocalizations.of(context)!.remove,
                 style: StyleLibrary.font.button.copyWith(
                   color: (onRemove == null)
                       ? StyleLibrary.color.disable

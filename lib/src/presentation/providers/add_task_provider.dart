@@ -15,47 +15,47 @@ class AddTaskProvider with ChangeNotifier {
 
   void onChanged(String? value) {
     if (value != null) {
-      task.description = value;
+      task.text = value;
       notifyListeners();
     }
     log('Change description : $value', name: dName);
   }
 
   void selectPriority(Priority priority) {
-    if (priority != Priority.none) {
-      task.priority = priority;
+    if (priority != Priority.basic) {
+      task.importance = priority;
       notifyListeners();
       log('Set Priority : $priority', name: dName);
     } else {
-      task.priority = null;
-      log('Clear Priority : ${task.priority}', name: dName);
+      task.importance = Priority.basic;
+      log('Clear Priority : ${task.importance}', name: dName);
     }
   }
 
   void selectDate(DateTime dateTime) {
-    task.date = dateTime;
+    task.deadline = dateTime;
     notifyListeners();
     log('Set Date : $dateTime', name: dName);
   }
 
   void switchDate(bool value) {
     if (!value) {
-      task.date = null;
+      task.deadline = null;
       notifyListeners();
       log('Clear Date', name: dName);
     } else {
-      task.date = DateTime.now();
-      log('Switch Date : ${task.date}', name: dName);
+      task.deadline = DateTime.now();
+      log('Switch Date : ${task.deadline}', name: dName);
     }
   }
 
   save() {
-    if (task.description.isNotEmpty) {
+    if (task.text.isNotEmpty) {
       var home = NavigationService.context.read<HomeProvider>();
       home.addTask(task);
       NavigationService.pop();
     } else {
-      log('Description is empty : ${task.description}', name: dName);
+      log('Description is empty : ${task.text}', name: dName);
       showDialog(
           context: NavigationService.context,
           builder: (context) {
@@ -65,9 +65,14 @@ class AddTaskProvider with ChangeNotifier {
                 textAlign: TextAlign.center,
               ),
               actions: [
-                TextButton(onPressed: NavigationService.pop, child: Text('ок')),
                 TextButton(
-                    onPressed: NavigationService.pop, child: Text('ну ок')),
+                  onPressed: NavigationService.pop,
+                  child: Text('ок'),
+                ),
+                TextButton(
+                  onPressed: NavigationService.pop,
+                  child: Text('ну ок'),
+                ),
               ],
             );
           });

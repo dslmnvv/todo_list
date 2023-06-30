@@ -74,7 +74,7 @@ class StyleTheme {
       foregroundColor: StyleLibrary.color.backSecondary,
       backgroundColor: StyleLibrary.color.blue,
     ),
-    datePickerTheme: DatePickerThemeData(),
+    datePickerTheme: const DatePickerThemeData(),
     checkboxTheme: CheckboxThemeData(
         fillColor: MaterialStateProperty.resolveWith((states) {
           if (states.contains(MaterialState.selected)) {

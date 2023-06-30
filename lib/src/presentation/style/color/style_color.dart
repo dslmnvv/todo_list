@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/src/presentation/style/style_library.dart';
 
 class StyleColor {
   var separator = const Color.fromRGBO(0, 0, 0, 0.2);

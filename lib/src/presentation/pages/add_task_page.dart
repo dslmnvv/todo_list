@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/src/domain/models/task.dart';
 import 'package:todo_list/src/presentation/pages/appbar/light_app_bar.dart';
@@ -8,6 +9,8 @@ import 'package:todo_list/src/presentation/style/theme/style_theme.dart';
 import 'package:todo_list/src/routing/navigation_service.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
+
+import '../../data/api/device/device_info.dart';
 
 class TaskArgs {
   final Task? task;
@@ -33,6 +36,7 @@ class AddTaskPage extends StatelessWidget {
         create: (context) =>
             AddTaskProvider(task ?? Task.empty(
                 id: const Uuid().v1(),
+                deviceId: GetIt.instance<DeviceInfo>().id,
             )),
         child: Builder(
           builder: (context) {

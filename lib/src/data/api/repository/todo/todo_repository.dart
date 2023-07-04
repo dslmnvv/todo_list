@@ -1,18 +1,20 @@
 import 'package:todo_list/src/_common/log_handler.dart';
-import 'package:todo_list/src/data/api/todo/todo_api.dart';
 import 'package:todo_list/src/domain/models/task.dart';
 
-class TodoController implements TodoApi {
+import '../repository.dart';
+
+class TodoRepository implements Repository {
   @override
   int revision;
 
-  TodoApi rest;
-  TodoApi storage;
+  Repository rest;
+  Repository storage;
 
   bool internetConnectionError = false;
 
-  TodoController(
-      {required this.storage, required this.rest, required this.revision});
+  TodoRepository(
+      //ревизия по умолчанию 0. Т.к не нуужна для этой имплементации
+      {required this.storage, required this.rest, this.revision = 0});
 
   @override
   Future<void> add(Task task) async {

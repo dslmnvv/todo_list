@@ -2,10 +2,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_list/src/_common/log_handler.dart';
 import 'package:todo_list/src/data/api/storage/sql/sql_storage.dart';
 import 'package:todo_list/src/data/api/storage/storage.dart';
-import 'package:todo_list/src/data/api/todo/todo_api.dart';
 import 'package:todo_list/src/domain/models/task.dart';
 
-class YandexTodoStorage implements TodoApi {
+import '../repository.dart';
+
+class StorageTodoRepository implements Repository {
   static const revisionKey = 'revision';
 
   @override
@@ -15,7 +16,7 @@ class YandexTodoStorage implements TodoApi {
   String key;
   String by;
 
-  YandexTodoStorage(this._storage,
+  StorageTodoRepository(this._storage,
       {required this.key, required this.by, required this.revision});
 
   @override
@@ -35,10 +36,10 @@ class YandexTodoStorage implements TodoApi {
     if (_storage.runtimeType == SqlStorage) {
       id = "'$id'";
 
-      _storage.replace(
+      await _storage.replace(
           key: key, value: id, by: by, replaceData: task.toSQLRequest());
     } else {
-      _storage.replace(key: key, value: id, by: by, replaceData: task.toJson());
+      await _storage.replace(key: key, value: id, by: by, replaceData: task.toJson());
     }
 
     await changeRevision();
@@ -101,13 +102,15 @@ class YandexTodoStorage implements TodoApi {
   }
 
   @override
-  Future<void> onErrorHandler(Object exception) {
-    // TODO: implement onErrorHandler
-    throw UnimplementedError();
+  Future<void> onErrorHandler(Object exception) async{
+    Log.e(exception);
   }
 
   Future<void> changeRevision() async {
+
     revision++;
+
+    Log.w('local revision = $revision');
     // Для облегчения обработки ревизии
     var localStorage = await SharedPreferences.getInstance();
     localStorage.setInt(revisionKey, revision);

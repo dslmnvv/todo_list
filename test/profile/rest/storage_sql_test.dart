@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:todo_list/src/application/profile/profile.dart';
+import 'package:todo_list/src/setup_service_locator.dart';
 import 'package:todo_list/src/domain/models/task.dart';
 import 'package:uuid/uuid.dart';
 

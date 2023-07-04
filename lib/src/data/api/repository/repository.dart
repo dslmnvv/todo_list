@@ -1,7 +1,7 @@
 import 'package:todo_list/src/domain/models/task.dart';
 
 
-abstract interface class TodoApi{
+abstract interface class Repository{
 
   late int revision;
 

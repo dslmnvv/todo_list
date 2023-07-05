@@ -60,9 +60,6 @@ class HomeProvider with ChangeNotifier {
     return tasks.where((element) => element.done != true).toList();
   }
 
-  void openAddTaskPage() {
-    NavigationService.push(routeName: AddTaskPage.routeName);
-  }
 
   void changeTask(int index, Task task) async{
     tasks[index] = task;
@@ -70,11 +67,6 @@ class HomeProvider with ChangeNotifier {
     await profile.todoController.change(task.id, task);
   }
 
-  void openChangeTaskPage(int index) {
-    NavigationService.push(
-        routeName: AddTaskPage.routeName,
-        arguments: TaskArgs(tasks.elementAt(index), index));
-  }
 
   void addTask(Task task) async {
     _tasks.add(task);

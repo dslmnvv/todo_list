@@ -9,7 +9,10 @@ import 'package:todo_list/src/presentation/style/theme/style_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key, required this.onTapAdd, required this.openChangeTask}) : super(key: key);
+
+  final Function() onTapAdd;
+  final Function(int id, Task task) openChangeTask;
 
   static const String routeName = 'homePage';
 
@@ -70,7 +73,7 @@ class _HomePageState extends State<HomePage> {
                                     width: 50,
                                   ),
                                   TextButton(
-                                    onPressed: state.openAddTaskPage,
+                                    onPressed: widget.onTapAdd,
                                     child: Text(
                                       AppLocalizations.of(context)!.newk,
                                       style: Theme.of(context)
@@ -93,9 +96,8 @@ class _HomePageState extends State<HomePage> {
                               onDismiss: () => state
                                   .removeTask(state.tasks.elementAt(index)),
                               onChangeStatus: state.changeStatusTask,
-                              openChangeTask: () => state.openChangeTaskPage(
-                                    index,
-                                  ));
+                              openChangeTask: () => widget.openChangeTask(index,state.tasks.elementAt(index))
+                          );
                         },
                       ),
                     ),
@@ -120,7 +122,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: state.openAddTaskPage,
+        onPressed: widget.onTapAdd,  //state.openAddTaskPage,
         child: const Icon(Icons.add),
       ),
     );

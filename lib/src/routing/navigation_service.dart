@@ -3,17 +3,22 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:todo_list/src/presentation/pages/add_task_page.dart';
 import 'package:todo_list/src/presentation/pages/home_page.dart';
+import 'package:todo_list/src/routing/router_delegate.dart';
 
 /// #### Упрощенная навигация, не требуют context
 class NavigationService {
-  static final GlobalKey<NavigatorState> navigatorKey =
-      GlobalKey<NavigatorState>();
+
+  static final routerDelegate = MyRouterDelegate();
+
+  static final GlobalKey<NavigatorState> navigatorKey = routerDelegate.navigatorKey;
 
   static BuildContext get context => navigatorKey.currentContext!;
 
+/*
   static void push({required String routeName, Object? arguments}) {
     Navigator.pushNamed(context, routeName, arguments: arguments);
   }
+*/
 
   static void pushAndRemoveUntil({required String routeName}) {
     Navigator.pushNamedAndRemoveUntil(context, routeName, (route) => false);
@@ -37,7 +42,7 @@ class NavigationService {
     Navigator.popUntil(context, ModalRoute.withName(routeName));
   }
 
-  static MaterialPageRoute onGenerateRoute(RouteSettings settings) {
+/*  static MaterialPageRoute onGenerateRoute(RouteSettings settings) {
     if (settings.arguments != null) {
       if (settings.name == AddTaskPage.routeName) {
         var args = settings.arguments as TaskArgs;
@@ -49,12 +54,12 @@ class NavigationService {
       }
     }
 
-    var routes = <String, WidgetBuilder>{
-      HomePage.routeName: (context) => const HomePage(),
+*//*    var routes = <String, WidgetBuilder>{
+     // HomePage.routeName: (context) => const HomePage(),
       AddTaskPage.routeName: (context) => const AddTaskPage(),
-    };
+    };*//*
 
     WidgetBuilder builder = routes[settings.name]!;
     return MaterialPageRoute(builder: (context) => builder(context));
-  }
+  }*/
 }

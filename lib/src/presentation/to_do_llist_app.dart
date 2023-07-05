@@ -4,15 +4,17 @@ import 'package:todo_list/src/presentation/style/style_library.dart';
 import 'package:todo_list/src/routing/navigation_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
+import 'package:todo_list/src/routing/router_delegate.dart';
 
 import '../_common/l10n/s.dart';
 
 class TodoListApp extends StatelessWidget {
   const TodoListApp({super.key});
 
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -20,14 +22,15 @@ class TodoListApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalMaterialLocalizations.delegate
       ],
+      routerDelegate: NavigationService.routerDelegate,
       supportedLocales: S.all,
-      navigatorKey: NavigationService.navigatorKey,
+      //  navigatorKey: NavigationService.navigatorKey,
       theme: StyleLibrary.theme.main,
       darkTheme: StyleLibrary.theme.main, //todo: изменить тему
       debugShowCheckedModeBanner: false,
       title: 'To-Do list',
-      onGenerateRoute: NavigationService.onGenerateRoute,
-      initialRoute: HomePage.routeName,
+      //onGenerateRoute: NavigationService.onGenerateRoute,
+      //initialRoute: HomePage.routeName,
     );
   }
 }

@@ -10,6 +10,8 @@ import 'package:todo_list/src/routing/navigation_service.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
 
+import '../../_common/log_handler.dart';
+
 import '../../data/api/device/device_info.dart';
 
 class TaskArgs {
@@ -32,6 +34,9 @@ class AddTaskPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    Log.d('AddTaskPage: task = $task');
+
     return ChangeNotifierProvider(
         create: (context) =>
             AddTaskProvider(task ?? Task.empty(

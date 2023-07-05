@@ -28,16 +28,21 @@ class YandexTodoRestRepository implements Repository {
   YandexTodoRestRepository({required this.rest});
 
   @override
-  Future<Task> get(String id) async {
-    Map<String, dynamic> data = await rest.get(endPoint: '/list/$id');
+  Future<Task?> get(String id) async {
+    try{
+      Map<String, dynamic> data = await rest.get(endPoint: '/list/$id');
 
-    Log.i('Получены данные: $data');
+      Log.i('Получены данные: $data');
 
-    revision = data['revision'];
+      revision = data['revision'];
 
-    Log.i('Обновлена ревизия: $_revision');
+      Log.i('Обновлена ревизия: $_revision');
 
-    return Task.fromJson(data['element']);
+      return Task.fromJson(data['element']);
+    }catch(exception, stackTrace){
+      Log.e('Элемент не найден', exception,stackTrace);
+      return null;
+    }
   }
 
   @override

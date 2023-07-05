@@ -63,7 +63,7 @@ class StorageTodoRepository implements Repository {
   }
 
   @override
-  Future<Task> get(String id) async {
+  Future<Task?> get(String id) async {
     Log.w('key = [ $key ]');
 
     if (_storage.runtimeType == SqlStorage) {
@@ -71,10 +71,10 @@ class StorageTodoRepository implements Repository {
       id = "'$id'";
 
       var data = await _storage.get(key: key, value: id, by: by);
-      return Task.fromSql(data);
+      return  (data != null) ? Task.fromSql(data) : null;
     } else {
       var data = await _storage.get(key: key, value: id, by: by);
-      return Task.fromJson(data);
+      return (data != null) ? Task.fromJson(data) : null;
     }
   }
 

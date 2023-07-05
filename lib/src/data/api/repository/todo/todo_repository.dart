@@ -53,7 +53,7 @@ class TodoRepository implements Repository {
   }
 
   @override
-  Future<Task> get(String id) async {
+  Future<Task?> get(String id) async {
     //Здесь мы полагаемся на то, что загрузили уже все данные с сервера
     return await storage.get(id);
   }
@@ -65,16 +65,16 @@ class TodoRepository implements Repository {
 
       await rest.getAll();
       return revisionHandler();
-    } catch (exception) {
-      Log.e(exception);
+    } catch (exception, stackTrace) {
+      Log.e(exception, exception, stackTrace);
       return await storage.getAll();
     }
   }
 
   @override
   Future<void> replaceAll(List<Task> tasks) async {
-    // Не вызывается пользователем
-    throw UnimplementedError('Метод не предназначен для пользователя');
+    await rest.replaceAll(tasks);
+    await storage.replaceAll(tasks);
   }
 
   Future<List<Task>> revisionHandler() async {

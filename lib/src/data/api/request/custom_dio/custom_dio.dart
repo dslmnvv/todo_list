@@ -56,7 +56,7 @@ class CustomDio implements HttpClient {
       exceptionHandler(exception, stackTrace);
 
       //todo: убрать
-      throw 'WHAT?';
+      rethrow;
     }
   }
 

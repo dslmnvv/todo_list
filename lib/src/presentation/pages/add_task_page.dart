@@ -24,13 +24,11 @@ class TaskArgs {
 class AddTaskPage extends StatelessWidget {
   const AddTaskPage({
     Key? key,
-    this.index,
     this.task,
   }) : super(key: key);
 
   static const routeName = 'add_task_page';
   final Task? task;
-  final int? index;
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +59,8 @@ class AddTaskPage extends StatelessWidget {
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.all(5),
                       ),
-                      onPressed: (task != null && index != null)
-                          ? () => state.change(index!, task!)
+                      onPressed: (task != null)
+                          ? () => state.change(task!)
                           : state.save,
                       child: Text(AppLocalizations.of(context)!.save),
                     ),

@@ -85,9 +85,9 @@ class AddTaskProvider with ChangeNotifier {
     NavigationService.pop();
   }
 
-  void change(int index, Task task) {
+  void change(Task task) {
     var home = NavigationService.context.read<HomeProvider>();
-    home.changeTask(index, task);
+    home.changeTask(task);
     NavigationService.pop();
   }
 }

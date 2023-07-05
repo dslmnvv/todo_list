@@ -12,7 +12,7 @@ class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.onTapAdd, required this.openChangeTask}) : super(key: key);
 
   final Function() onTapAdd;
-  final Function(int id, Task task) openChangeTask;
+  final Function(Task task) openChangeTask;
 
   static const String routeName = 'homePage';
 
@@ -96,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                               onDismiss: () => state
                                   .removeTask(state.tasks.elementAt(index)),
                               onChangeStatus: state.changeStatusTask,
-                              openChangeTask: () => widget.openChangeTask(index,state.tasks.elementAt(index))
+                              openChangeTask: () => widget.openChangeTask(state.tasks.elementAt(index))
                           );
                         },
                       ),

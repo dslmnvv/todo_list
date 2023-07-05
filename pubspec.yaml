@@ -44,6 +44,7 @@ dependencies:
   logger: ^1.4.0
   uuid: ^3.0.7
   sqflite_common_ffi: ^2.2.5 #for unit tests
+  sqflite_common_ffi_web: ^0.3.6
   sqlite3_flutter_libs: ^0.5.15
   shared_preferences: ^2.1.2
   path_provider: ^2.0.15

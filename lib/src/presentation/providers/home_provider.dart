@@ -63,7 +63,8 @@ class HomeProvider with ChangeNotifier {
   }
 
 
-  void changeTask(int index, Task task) async{
+  void changeTask(Task task) async{
+    int index = _tasks.indexWhere((element) => element.id == task.id);
     _tasks[index] = task;
     notifyListeners();
     await repository.change(task.id, task);

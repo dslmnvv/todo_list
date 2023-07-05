@@ -23,6 +23,7 @@ class TodoListApp extends StatelessWidget {
         GlobalMaterialLocalizations.delegate
       ],
       routerDelegate: NavigationService.routerDelegate,
+      routeInformationParser: NavigationService.routeInformationParser,
       supportedLocales: S.all,
       //  navigatorKey: NavigationService.navigatorKey,
       theme: StyleLibrary.theme.main,

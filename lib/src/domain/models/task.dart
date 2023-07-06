@@ -1,4 +1,3 @@
-import 'package:todo_list/src/data/api/device/info_plus/device_info_plus.dart';
 
 import '../../_common/log_handler.dart';
 

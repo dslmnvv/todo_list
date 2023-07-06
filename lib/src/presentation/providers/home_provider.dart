@@ -1,8 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:todo_list/src/presentation/pages/add_task_page.dart';
-import 'package:todo_list/src/routing/navigation_service.dart';
 import '../../_common/log_handler.dart';
 import '../../data/api/repository/repository.dart';
 import '../../domain/models/task.dart';

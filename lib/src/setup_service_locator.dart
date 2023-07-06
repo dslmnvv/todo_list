@@ -21,97 +21,86 @@ import 'data/api/repository/rest/yandex_todo_rest_repository.dart';
 import 'data/api/repository/storage/storage_todo_repository.dart';
 import 'data/api/storage/sql/sql_storage.dart';
 
-  void setupServiceLocator() async {
-
-    GetIt.instance.registerSingleton<HttpClient>(
-      CustomDio(
-        Dio(
-          BaseOptions(headers: {
-            'Authorization': 'Bearer ${YandexApiConst.accessToken}',
-          }),
-        ),
-        url: YandexApiConst.url,
+void setupServiceLocator() async {
+  GetIt.instance.registerSingleton<HttpClient>(
+    CustomDio(
+      Dio(
+        BaseOptions(headers: {
+          'Authorization': 'Bearer ${YandexApiConst.accessToken}',
+        }),
       ),
+      url: YandexApiConst.url,
+    ),
+  );
+
+  GetIt.instance.registerSingleton<Rest>(
+    YandexApi(
+      client: GetIt.instance<HttpClient>(),
+    ),
+  );
+
+  GetIt.instance.registerSingleton<YandexTodoRestRepository>(
+    YandexTodoRestRepository(rest: GetIt.instance<Rest>()),
+  );
+
+  GetIt.instance.registerSingletonAsync<SqlStorage>(() async {
+    var db = await databaseFactoryFfi.openDatabase(
+        join((await getApplicationDocumentsDirectory()).path,
+            DatabaseConst.schema),
+        options: OpenDatabaseOptions(
+          onCreate: (db, version) {
+            return db.execute(
+              "create table tasks("
+              "id INTEGER PRIMARY KEY,"
+              "uuid varchar,"
+              "description text,"
+              "importance varchar,"
+              "deadline datetime,"
+              "done boolean,"
+              "color varchar, "
+              "created_at datetime,"
+              "changed_at datetime, "
+              "last_updated_by varchar  "
+              ")",
+            );
+          },
+          version: 1,
+        ));
+
+    return SqlStorage(db);
+  });
+
+  GetIt.instance.registerSingletonAsync<StorageTodoRepository>(() async {
+    //Тут достаем сохраненный номер ревизии
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    int lastRevision =
+        localStorage.getInt(StorageTodoRepository.revisionKey) ?? 0;
+
+    await GetIt.instance.isReady<SqlStorage>();
+    final storage = GetIt.instance<SqlStorage>();
+
+    return StorageTodoRepository(storage,
+        key: DatabaseConst.tasks, by: 'uuid', revision: lastRevision);
+  });
+
+  GetIt.instance.registerLazySingleton<Repository>(() {
+    return TodoRepository(
+      storage: GetIt.instance<StorageTodoRepository>(),
+      rest: GetIt.instance<YandexTodoRestRepository>(),
     );
+  });
 
-    GetIt.instance.registerSingleton<Rest>(
-       YandexApi(
-           client: GetIt.instance<HttpClient>(),
-       ),
-    );
+  GetIt.instance.registerSingletonAsync<DeviceInfo>(() async {
+    DeviceInfoPlugin info = DeviceInfoPlugin();
 
-    GetIt.instance.registerSingleton<YandexTodoRestRepository>(
-      YandexTodoRestRepository(rest: GetIt.instance<Rest>()),
-    );
-
-    GetIt.instance.registerSingletonAsync<SqlStorage>(() async {
-      var db = await databaseFactoryFfi.openDatabase(
-          join((await getApplicationDocumentsDirectory()).path,
-              DatabaseConst.schema),
-          options: OpenDatabaseOptions(
-            onCreate: (db, version) {
-              return db.execute(
-                "create table tasks("
-                    "id INTEGER PRIMARY KEY,"
-                    "uuid varchar,"
-                    "description text,"
-                    "importance varchar,"
-                    "deadline datetime,"
-                    "done boolean,"
-                    "color varchar, "
-                    "created_at datetime,"
-                    "changed_at datetime, "
-                    "last_updated_by varchar  "
-                    ")",
-              );
-            },
-            version: 1,
-          ));
-
-      return SqlStorage(db);
-    });
-
-
-    GetIt.instance.registerSingletonAsync<StorageTodoRepository>(()  async {
-
-      //Тут достаем сохраненный номер ревизии
-      SharedPreferences localStorage = await SharedPreferences.getInstance();
-      int lastRevision = localStorage.getInt(StorageTodoRepository.revisionKey) ?? 0;
-
-      await GetIt.instance.isReady<SqlStorage>();
-      final storage = GetIt.instance<SqlStorage>();
-
-      return StorageTodoRepository(
-          storage,
-          key: DatabaseConst.tasks,
-          by: 'uuid',
-          revision: lastRevision
-      );
-    });
-
-    
-    GetIt.instance.registerLazySingleton<Repository>(()  {
-      return TodoRepository(
-          storage: GetIt.instance<StorageTodoRepository>(),
-          rest: GetIt.instance<YandexTodoRestRepository>(),
-      );
-    });
-
-    GetIt.instance.registerSingletonAsync<DeviceInfo>(() async {
-
-      DeviceInfoPlugin info = DeviceInfoPlugin();
-
-      if(Platform.isAndroid){
-        var device = await info.androidInfo;
-        return DeviceInfoPlus(device.id);
-      }
-      if(Platform.isIOS){
-        var device = await info.iosInfo;
-        return DeviceInfoPlus(device.identifierForVendor ?? device.name);
-      }
-      return DeviceInfoPlus('unknown');
-
-    });
-
-  }
-
+    if (Platform.isAndroid) {
+      var device = await info.androidInfo;
+      return DeviceInfoPlus(device.id);
+    }
+    if (Platform.isIOS) {
+      var device = await info.iosInfo;
+      return DeviceInfoPlus(device.identifierForVendor ?? device.name);
+    }
+    return DeviceInfoPlus('unknown');
+  });
+}

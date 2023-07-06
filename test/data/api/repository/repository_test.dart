@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:todo_list/src/data/api/repository/repository.dart';
-import 'package:todo_list/src/data/api/repository/todo/todo_repository.dart';
 import '../../../mock/mock_tasks.dart';
 import 'register_repository.dart';
 

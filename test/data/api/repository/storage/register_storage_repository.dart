@@ -1,16 +1,9 @@
-import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:todo_list/src/const/api/storage/sql/database_const.dart';
-import 'package:todo_list/src/const/api/yandex/yandex_api_const.dart';
-import 'package:todo_list/src/data/api/repository/rest/yandex_todo_rest_repository.dart';
 import 'package:todo_list/src/data/api/repository/storage/storage_todo_repository.dart';
-import 'package:todo_list/src/data/api/request/custom_dio/custom_dio.dart';
-import 'package:todo_list/src/data/api/request/http_client.dart';
-import 'package:todo_list/src/data/api/rest/rest.dart';
-import 'package:todo_list/src/data/api/rest/yandex/yandex_api.dart';
 import 'package:todo_list/src/data/api/storage/sql/sql_storage.dart';
 
 void registerStorageRepository(){

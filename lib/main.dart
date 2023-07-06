@@ -6,7 +6,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:todo_list/src/presentation/to_do_llist_app.dart';
 import 'package:todo_list/src/setup_service_locator.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   setupServiceLocator();

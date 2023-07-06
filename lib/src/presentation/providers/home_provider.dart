@@ -18,7 +18,7 @@ class HomeProvider with ChangeNotifier {
 
 
 
-  Future<void> initProfile() async{
+  Future<void> init() async{
     waitStatus = true;
     _tasks = await repository.getAll();
     changeWaitStatus(false);

@@ -1,4 +1,3 @@
-import 'package:todo_list/src/const/api/device.dart';
 
 import '../../_common/log_handler.dart';
 
@@ -109,11 +108,11 @@ class Task {
     };
   }
 
-  factory Task.empty({required String id}) {
+  factory Task.empty({required String id, required String deviceId}) {
     return Task(
       text: '',
       id: id,
-      lastUpdateBy: DeviceInfo.id,
+      lastUpdateBy: deviceId,
       done: false,
       changeAt: DateTime.now(),
       createdAt: DateTime.now(),

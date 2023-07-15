@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/src/domain/models/task.dart';
 import 'package:todo_list/src/presentation/pages/appbar/light_app_bar.dart';
@@ -11,6 +12,8 @@ import 'package:flutter_gen/gen_l10n/app_localization.dart';
 
 import '../../_common/log_handler.dart';
 
+import '../../data/api/device/device_info.dart';
+
 class TaskArgs {
   final Task? task;
   final int? index;
@@ -21,13 +24,11 @@ class TaskArgs {
 class AddTaskPage extends StatelessWidget {
   const AddTaskPage({
     Key? key,
-    this.index,
     this.task,
   }) : super(key: key);
 
   static const routeName = 'add_task_page';
   final Task? task;
-  final int? index;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +39,7 @@ class AddTaskPage extends StatelessWidget {
         create: (context) =>
             AddTaskProvider(task ?? Task.empty(
                 id: const Uuid().v1(),
+                deviceId: GetIt.instance<DeviceInfo>().id,
             )),
         child: Builder(
           builder: (context) {
@@ -57,8 +59,8 @@ class AddTaskPage extends StatelessWidget {
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.all(5),
                       ),
-                      onPressed: (task != null && index != null)
-                          ? () => state.change(index!, task!)
+                      onPressed: (task != null)
+                          ? () => state.change(task!)
                           : state.save,
                       child: Text(AppLocalizations.of(context)!.save),
                     ),

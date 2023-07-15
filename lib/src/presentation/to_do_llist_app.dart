@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/src/presentation/pages/home_page.dart';
 import 'package:todo_list/src/presentation/style/style_library.dart';
 import 'package:todo_list/src/routing/navigation_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
-import 'package:todo_list/src/routing/router_delegate.dart';
 
 import '../_common/l10n/s.dart';
 
@@ -23,6 +21,7 @@ class TodoListApp extends StatelessWidget {
         GlobalMaterialLocalizations.delegate
       ],
       routerDelegate: NavigationService.routerDelegate,
+      routeInformationParser: NavigationService.routeInformationParser,
       supportedLocales: S.all,
       //  navigatorKey: NavigationService.navigatorKey,
       theme: StyleLibrary.theme.main,

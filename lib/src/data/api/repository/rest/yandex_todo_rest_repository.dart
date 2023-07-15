@@ -2,12 +2,13 @@ import 'package:todo_list/src/_common/log_handler.dart';
 import 'package:todo_list/src/data/api/request/custom_dio/exceptions/internet_fail_exception.dart';
 import 'package:todo_list/src/data/api/request/exceptions/http_client_exception.dart';
 import 'package:todo_list/src/data/api/rest/rest.dart';
-import 'package:todo_list/src/data/api/todo/todo_api.dart';
 import 'package:todo_list/src/domain/models/task.dart';
 
-class YandexTodoRest implements TodoApi {
+import '../repository.dart';
+
+class YandexTodoRestRepository implements Repository {
   Rest rest;
-  late int _revision;
+  int? _revision;
 
   @override
   set revision(int value) {
@@ -15,21 +16,33 @@ class YandexTodoRest implements TodoApi {
   }
 
   @override
-  int get revision => _revision;
+  int get revision {
+   if(_revision != null){
+     return _revision!;
+   }else{
+     Log.e('Поле _revision не проинициализировано');
+     return 0;
+   }
+  }
 
-  YandexTodoRest({required this.rest});
+  YandexTodoRestRepository({required this.rest});
 
   @override
-  Future<Task> get(String id) async {
-    Map<String, dynamic> data = await rest.get(endPoint: '/list/$id');
+  Future<Task?> get(String id) async {
+    try{
+      Map<String, dynamic> data = await rest.get(endPoint: '/list/$id');
 
-    Log.i('Получены данные: $data');
+      Log.i('Получены данные: $data');
 
-    revision = data['revision'];
+      revision = data['revision'];
 
-    Log.i('Обновлена ревизия: $_revision');
+      Log.i('Обновлена ревизия: $_revision');
 
-    return Task.fromJson(data['element']);
+      return Task.fromJson(data['element']);
+    }catch(exception, stackTrace){
+      Log.e('Элемент не найден', exception,stackTrace);
+      return null;
+    }
   }
 
   @override
@@ -115,7 +128,7 @@ class YandexTodoRest implements TodoApi {
   }
 
   @override
-  Future<void> onErrorHandler(Object exception) {
+  Future<void> onErrorHandler(Object exception) async {
     if (exception is InternetFailException) {
       Log.w(exception.message);
     }
@@ -124,6 +137,6 @@ class YandexTodoRest implements TodoApi {
       Log.e(exception.message);
     }
 
-    throw exception;
+    //throw exception;
   }
 }

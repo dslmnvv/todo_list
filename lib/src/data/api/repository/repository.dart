@@ -1,11 +1,11 @@
 import 'package:todo_list/src/domain/models/task.dart';
 
 
-abstract interface class TodoApi{
+abstract interface class Repository{
 
   late int revision;
 
-  Future<Task> get(String id);
+  Future<Task?> get(String id);
 
   Future<void> add(Task task);
 

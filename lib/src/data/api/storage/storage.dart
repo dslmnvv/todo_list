@@ -14,7 +14,7 @@ abstract interface class Storage {
   /// * [key] - storage key, where find element.
   /// * [value] - unique value by which we will search for the element.
   /// * [by] -  id value to compare with [value].
-  Future<Map<String, dynamic>> get(
+  Future<Map<String, dynamic>?> get(
       {required String key, required String value, required String by});
 
   /// ## Define method for replace data.

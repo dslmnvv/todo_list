@@ -9,10 +9,12 @@ import 'package:todo_list/src/presentation/style/theme/style_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key, required this.onTapAdd, required this.openChangeTask}) : super(key: key);
+  const HomePage(
+      {Key? key, required this.onTapAdd, required this.openChangeTask})
+      : super(key: key);
 
   final Function() onTapAdd;
-  final Function(int id, Task task) openChangeTask;
+  final Function(Task task) openChangeTask;
 
   static const String routeName = 'homePage';
 
@@ -23,7 +25,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
-    context.read<HomeProvider>().initProfile();
+    context.read<HomeProvider>().init();
     super.initState();
   }
 
@@ -37,93 +39,96 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    return Scaffold(
-      body: RefreshIndicator(
-        onRefresh: state.refreshTask,
-        child: CustomScrollView(
-          physics: const AlwaysScrollableScrollPhysics(
-              parent: BouncingScrollPhysics()),
-          slivers: <Widget>[
-            AppBar(
-              title: AppLocalizations.of(context)!.myTasks,
-              subTitle:
-                  '${AppLocalizations.of(context)!.done} - ${state.complete}',
-              onTapEye: state.showAllTasks,
-            ),
-            (state.tasks.isNotEmpty)
-                ? SliverPadding(
-                    padding: StyleLibrary.padding.content,
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        childCount: state.tasks.length + 1,
-                        (BuildContext context, int index) {
-                          if (index == state.tasks.length) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .backSecondary,
-                                  borderRadius: const BorderRadius.only(
-                                      bottomLeft: Radius.circular(8),
-                                      bottomRight: Radius.circular(8))),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    width: 50,
-                                  ),
-                                  TextButton(
-                                    onPressed: widget.onTapAdd,
-                                    child: Text(
-                                      AppLocalizations.of(context)!.newk,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineMedium
-                                          ?.copyWith(
-                                            color: StyleLibrary.color.tertiary,
-                                          ),
+    return SafeArea(
+      child: Scaffold(
+        body: RefreshIndicator(
+          onRefresh: state.refreshTask,
+          child: CustomScrollView(
+            physics: const AlwaysScrollableScrollPhysics(
+                parent: BouncingScrollPhysics()),
+            slivers: <Widget>[
+              AppBar(
+                title: AppLocalizations.of(context)!.myTasks,
+                subTitle:
+                    '${AppLocalizations.of(context)!.done} - ${state.complete}',
+                onTapEye: state.showAllTasks,
+              ),
+              (state.tasks.isNotEmpty)
+                  ? SliverPadding(
+                      padding: StyleLibrary.padding.content,
+                      sliver: SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          childCount: state.tasks.length + 1,
+                          (BuildContext context, int index) {
+                            if (index == state.tasks.length) {
+                              return Container(
+                                decoration: BoxDecoration(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .backSecondary,
+                                    borderRadius: const BorderRadius.only(
+                                        bottomLeft: Radius.circular(8),
+                                        bottomRight: Radius.circular(8))),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(
+                                      width: 50,
                                     ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }
+                                    TextButton(
+                                      onPressed: widget.onTapAdd,
+                                      child: Text(
+                                        AppLocalizations.of(context)!.newk,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineMedium
+                                            ?.copyWith(
+                                              color:
+                                                  StyleLibrary.color.tertiary,
+                                            ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
 
-                          return DismissibleCard(
-                              index: index,
-                              len: state.tasks.length,
-                              task: state.tasks.elementAt(index),
-                              onDismiss: () => state
-                                  .removeTask(state.tasks.elementAt(index)),
-                              onChangeStatus: state.changeStatusTask,
-                              openChangeTask: () => widget.openChangeTask(index,state.tasks.elementAt(index))
-                          );
-                        },
+                            return DismissibleCard(
+                                index: index,
+                                len: state.tasks.length,
+                                task: state.tasks.elementAt(index),
+                                onDismiss: () => state
+                                    .removeTask(state.tasks.elementAt(index)),
+                                onChangeStatus: state.changeStatusTask,
+                                openChangeTask: () => widget.openChangeTask(
+                                    state.tasks.elementAt(index)));
+                          },
+                        ),
                       ),
-                    ),
-                  )
-                : SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height / 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '${AppLocalizations.of(context)!.hooray} 🥳',
-                            style: Theme.of(context).textTheme.titleMedium,
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
+                    )
+                  : SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height / 2,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '${AppLocalizations.of(context)!.hooray} 🥳',
+                              style: Theme.of(context).textTheme.titleMedium,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  )
-          ],
+                    )
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: widget.onTapAdd,  //state.openAddTaskPage,
-        child: const Icon(Icons.add),
+        floatingActionButton: FloatingActionButton(
+          onPressed: widget.onTapAdd, //state.openAddTaskPage,
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }

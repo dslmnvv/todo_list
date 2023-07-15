@@ -16,12 +16,12 @@ class SqlStorage implements Storage {
   }
 
   @override
-  Future<Map<String, dynamic>> get(
+  Future<Map<String, dynamic>?> get(
       {required String key, required dynamic value, required String by}) async {
     var result = await database.query(key, where: '$by=$value');
 
     if (result.isEmpty) {
-      throw SqlStorageException('Данные не найдены');
+      return null;
     }
 
     return result.first;

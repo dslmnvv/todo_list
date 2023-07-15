@@ -1,27 +1,24 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:todo_list/src/application/profile/profile.dart';
-import 'package:todo_list/src/presentation/pages/add_task_page.dart';
-import 'package:todo_list/src/routing/navigation_service.dart';
-
+import 'package:get_it/get_it.dart';
+import '../../_common/log_handler.dart';
+import '../../data/api/repository/repository.dart';
 import '../../domain/models/task.dart';
 
 class HomeProvider with ChangeNotifier {
-  static const dName = 'HomeProvider';
+  static const _dName = 'HomeProvider';
   bool waitStatus = false;
 
-  late Profile profile;
+  Repository repository = GetIt.instance<Repository>();
 
   List<Task> _tasks = [];
   bool showAll = false;
 
 
 
-  Future<void> initProfile() async{
+  Future<void> init() async{
     waitStatus = true;
-    profile = await Profile().getInstance();
-    _tasks = await profile.todoController.getAll();
+    _tasks = await repository.getAll();
     changeWaitStatus(false);
   }
 
@@ -46,9 +43,12 @@ class HomeProvider with ChangeNotifier {
 
   List<Task> get tasks {
     if(showAll){
+      Log.d('Показываю список: $_tasks');
       return _tasks;
     }else{
-      return _tasks.where((element) => element.done != true).toList();
+      var elements = _tasks.where((element) => element.done != true).toList();
+      Log.d('Показываю список: $elements');
+      return elements;
     }
   }
 
@@ -61,37 +61,38 @@ class HomeProvider with ChangeNotifier {
   }
 
 
-  void changeTask(int index, Task task) async{
-    tasks[index] = task;
+  void changeTask(Task task) async{
+    int index = _tasks.indexWhere((element) => element.id == task.id);
+    _tasks[index] = task;
     notifyListeners();
-    await profile.todoController.change(task.id, task);
+    await repository.change(task.id, task);
   }
 
 
   void addTask(Task task) async {
     _tasks.add(task);
     notifyListeners();
-    await profile.todoController.add(task);
+    await repository.add(task);
 
   }
 
   void removeTask(Task task) async {
     _tasks.remove(task);
-    log('Remove Task $task', name: dName);
+    log('Remove Task $task', name: _dName);
     notifyListeners();
-    await profile.todoController.delete(task.id);
+    await repository.delete(task.id);
   }
 
   void changeStatusTask(bool status, int index)  async{
-    _tasks.elementAt(index).done = status;
+    var task = tasks.elementAt(index);
+    tasks.elementAt(index).done = status;
     notifyListeners();
-    var task = _tasks.elementAt(index);
-    await profile.todoController.change(task.id, task);
-    log('Change status for Task $index', name: dName);
+    await repository.change(task.id, task);
+    log('Change status for Task $index', name: _dName);
   }
 
   Future<void> refreshTask() async{
-    _tasks = await profile.todoController.getAll();
+    _tasks = await repository.getAll();
     notifyListeners();
   }
 
@@ -101,12 +102,5 @@ class HomeProvider with ChangeNotifier {
     showAll = value;
     notifyListeners();
 
-    /*if (!value) {
-      tasks = _tasks;
-      notifyListeners();
-    } else {
-      tasks = notCompleteTasks;
-      notifyListeners();
-    }*/
   }
 }

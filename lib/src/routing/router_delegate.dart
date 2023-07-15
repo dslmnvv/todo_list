@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_list/src/domain/models/task.dart';
 import 'package:todo_list/src/presentation/pages/add_task_page.dart';
@@ -25,12 +24,22 @@ class MyRouterDelegate extends RouterDelegate<NavigationState>
           onTapAdd: _onTapAdd,
           openChangeTask: _openChangeTask,
         )),
-        if (state?.isTask == true)
+        if (state?.isAddTask == true)
+          const MaterialPage(
+              child: AddTaskPage()),
+        if(state?.isChangeTask == true)
           MaterialPage(
               child: AddTaskPage(
-            index: state?.taskIndex,
-            task: state?.task,
-          ))
+                task: state?.task,
+              )),
+        if(state?.isUnknown == true)
+          //Пускай в таком случае просто выводит главную страницу,
+          // позже можно заменить.
+          MaterialPage(
+              child: HomePage(
+                onTapAdd: _onTapAdd,
+                openChangeTask: _openChangeTask,
+          )),
       ],
       onPopPage: (route, result) {
         if (!route.didPop(result)) {
@@ -56,9 +65,9 @@ class MyRouterDelegate extends RouterDelegate<NavigationState>
     notifyListeners();
   }
 
-  _openChangeTask(int id, Task task) {
-    Log.d('open Change Task id = $id, task = $task');
-    state = NavigationState.changeTask(task: task, taskIndex: id);
+  _openChangeTask(Task task) {
+    Log.d('open Change Task, task = $task');
+    state = NavigationState.changeTask(task: task);
     notifyListeners();
   }
 }

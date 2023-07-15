@@ -1,18 +1,20 @@
 import 'package:todo_list/src/_common/log_handler.dart';
-import 'package:todo_list/src/data/api/todo/todo_api.dart';
 import 'package:todo_list/src/domain/models/task.dart';
 
-class TodoController implements TodoApi {
+import '../repository.dart';
+
+class TodoRepository implements Repository {
   @override
   int revision;
 
-  TodoApi rest;
-  TodoApi storage;
+  Repository rest;
+  Repository storage;
 
   bool internetConnectionError = false;
 
-  TodoController(
-      {required this.storage, required this.rest, required this.revision});
+  TodoRepository(
+      //ревизия по умолчанию 0. Т.к не нуужна для этой имплементации
+      {required this.storage, required this.rest, this.revision = 0});
 
   @override
   Future<void> add(Task task) async {
@@ -51,7 +53,7 @@ class TodoController implements TodoApi {
   }
 
   @override
-  Future<Task> get(String id) async {
+  Future<Task?> get(String id) async {
     //Здесь мы полагаемся на то, что загрузили уже все данные с сервера
     return await storage.get(id);
   }
@@ -63,16 +65,16 @@ class TodoController implements TodoApi {
 
       await rest.getAll();
       return revisionHandler();
-    } catch (exception) {
-      Log.e(exception);
+    } catch (exception, stackTrace) {
+      Log.e(exception, exception, stackTrace);
       return await storage.getAll();
     }
   }
 
   @override
   Future<void> replaceAll(List<Task> tasks) async {
-    // Не вызывается пользователем
-    throw UnimplementedError('Метод не предназначен для пользователя');
+    await rest.replaceAll(tasks);
+    await storage.replaceAll(tasks);
   }
 
   Future<List<Task>> revisionHandler() async {

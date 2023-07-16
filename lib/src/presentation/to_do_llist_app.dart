@@ -23,13 +23,10 @@ class TodoListApp extends StatelessWidget {
       routerDelegate: NavigationService.routerDelegate,
       routeInformationParser: NavigationService.routeInformationParser,
       supportedLocales: S.all,
-      //  navigatorKey: NavigationService.navigatorKey,
       theme: StyleLibrary.theme.main,
       darkTheme: StyleLibrary.theme.dark,
       debugShowCheckedModeBanner: false,
       title: 'To-Do list',
-      //onGenerateRoute: NavigationService.onGenerateRoute,
-      //initialRoute: HomePage.routeName,
     );
   }
 }

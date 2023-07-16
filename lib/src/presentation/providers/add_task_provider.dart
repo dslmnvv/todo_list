@@ -49,28 +49,28 @@ class AddTaskProvider with ChangeNotifier {
     }
   }
 
-  save() {
+  save(Function() onBack) {
     if (task.text.isNotEmpty) {
       var home = NavigationService.context.read<HomeProvider>();
       home.addTask(task);
-      NavigationService.pop();
+      onBack();
     } else {
       log('Description is empty : ${task.text}', name: dName);
       showDialog(
           context: NavigationService.context,
           builder: (context) {
-            return const AlertDialog(
+            return  AlertDialog(
               content: Text(
                 'Заполни хотя бы описание 🙏🏻',
                 textAlign: TextAlign.center,
               ),
               actions: [
                 TextButton(
-                  onPressed: NavigationService.pop,
+                  onPressed: () => Navigator.pop(context),
                   child: Text('ок'),
                 ),
                 TextButton(
-                  onPressed: NavigationService.pop,
+                  onPressed: () => Navigator.pop(context),
                   child: Text('ну ок'),
                 ),
               ],
@@ -79,15 +79,17 @@ class AddTaskProvider with ChangeNotifier {
     }
   }
 
-  onRemove(Task task) {
+  onRemove(Task task, Function() onBack) {
     var home = NavigationService.context.read<HomeProvider>();
     home.removeTask(task);
-    NavigationService.pop();
+    onBack();
+    //NavigationService.pop();
   }
 
-  void change(Task task) {
+  change(Task task, Function() onBack) {
     var home = NavigationService.context.read<HomeProvider>();
     home.changeTask(task);
-    NavigationService.pop();
+    onBack();
+    //NavigationService.pop();
   }
 }

@@ -25,11 +25,14 @@ class MyRouterDelegate extends RouterDelegate<NavigationState>
           openChangeTask: _openChangeTask,
         )),
         if (state?.isAddTask == true)
-          const MaterialPage(
-              child: AddTaskPage()),
+           MaterialPage(
+              child: AddTaskPage(
+                onBack: _onGoRoot,
+              )),
         if(state?.isChangeTask == true)
           MaterialPage(
               child: AddTaskPage(
+                onBack: _onGoRoot,
                 task: state?.task,
               )),
         if(state?.isUnknown == true)
@@ -57,6 +60,11 @@ class MyRouterDelegate extends RouterDelegate<NavigationState>
   @override
   Future<void> setNewRoutePath(NavigationState configuration) async {
     state = configuration;
+    notifyListeners();
+  }
+
+  _onGoRoot(){
+    state = NavigationState.root();
     notifyListeners();
   }
 

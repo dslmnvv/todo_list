@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_list/src/domain/models/task.dart';
 import 'package:todo_list/src/presentation/pages/appbar/light_app_bar.dart';
 import 'package:todo_list/src/presentation/providers/add_task_provider.dart';
 import 'package:todo_list/src/presentation/providers/config_provider.dart';
@@ -10,6 +9,7 @@ import 'package:uuid/uuid.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
 import '../../_common/log_handler.dart';
 import '../../data/api/device/device_info.dart';
+import '../../domain/models/task_freezed.dart';
 import '../style/theme/app_theme_extension.dart';
 
 
@@ -21,7 +21,7 @@ class AddTaskPage extends StatelessWidget {
   }) : super(key: key);
 
   static const routeName = 'add_task_page';
-  final Task? task;
+  final TaskFreezed? task;
   final Function() onBack;
 
   @override
@@ -30,7 +30,7 @@ class AddTaskPage extends StatelessWidget {
 
     return ChangeNotifierProvider(
         create: (context) => AddTaskProvider(task ??
-            Task.empty(
+            TaskFreezed.empty(
               id: const Uuid().v1(),
               deviceId: GetIt.instance<DeviceInfo>().id,
             )),
@@ -56,7 +56,7 @@ class AddTaskPage extends StatelessWidget {
                         padding: const EdgeInsets.all(5),
                       ),
                       onPressed: (task != null)
-                          ? () => state.change(task!, onBack)
+                          ? () => state.change(onBack)
                           : () => state.save(onBack),
                       child: Text(AppLocalizations.of(context)!.save),
                     ),

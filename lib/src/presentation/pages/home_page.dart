@@ -1,17 +1,13 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_list/src/_common/hex_color.dart';
-import 'package:todo_list/src/domain/models/task.dart';
 import 'package:todo_list/src/presentation/pages/appbar/custom_app_bar.dart';
 import 'package:todo_list/src/presentation/providers/config_provider.dart';
 import 'package:todo_list/src/presentation/providers/home_provider.dart';
 import 'package:todo_list/src/presentation/style/style_library.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
-
 import '../../_common/log_handler.dart';
-import '../../data/api/repository/config_repository.dart';
+import '../../domain/models/task_freezed.dart';
 import '../style/theme/app_theme_extension.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,7 +16,7 @@ class HomePage extends StatefulWidget {
       : super(key: key);
 
   final Function() onTapAdd;
-  final Function(Task task) openChangeTask;
+  final Function(TaskFreezed task) openChangeTask;
 
   static const String routeName = 'homePage';
 
@@ -209,7 +205,7 @@ class DismissibleCard extends StatefulWidget {
 
   final int index;
   final int len;
-  final Task task;
+  final TaskFreezed task;
   final Function() onDismiss;
   final Function(bool status, int index) onChangeStatus;
   final Function() openChangeTask;
@@ -286,7 +282,7 @@ class TaskCard extends StatefulWidget {
 
   final bool isFirst;
   final bool isLast;
-  final Task task;
+  final TaskFreezed task;
   final int index;
   final Function(bool status, int index) onChangeStatus;
   final Function() openChangeTask;

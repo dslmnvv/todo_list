@@ -2,8 +2,8 @@ import 'package:todo_list/src/_common/log_handler.dart';
 import 'package:todo_list/src/data/api/request/custom_dio/exceptions/internet_fail_exception.dart';
 import 'package:todo_list/src/data/api/request/exceptions/http_client_exception.dart';
 import 'package:todo_list/src/data/api/rest/rest.dart';
-import 'package:todo_list/src/domain/models/task.dart';
 
+import '../../../../domain/models/task_freezed.dart';
 import '../repository.dart';
 
 class YandexTodoRestRepository implements Repository {
@@ -28,7 +28,7 @@ class YandexTodoRestRepository implements Repository {
   YandexTodoRestRepository({required this.rest});
 
   @override
-  Future<Task?> get(String id) async {
+  Future<TaskFreezed?> get(String id) async {
     try{
       Map<String, dynamic> data = await rest.get(endPoint: '/list/$id');
 
@@ -38,7 +38,7 @@ class YandexTodoRestRepository implements Repository {
 
       Log.i('Обновлена ревизия: $_revision');
 
-      return Task.fromJson(data['element']);
+      return TaskFreezed.fromJson(data['element']);
     }catch(exception, stackTrace){
       Log.e('Элемент не найден', exception,stackTrace);
       return null;
@@ -46,7 +46,7 @@ class YandexTodoRestRepository implements Repository {
   }
 
   @override
-  Future<void> add(Task task) async {
+  Future<void> add(TaskFreezed task) async {
     Map<String, dynamic>? data = await rest.post(endPoint: '/list/', headers: {
       'X-Last-Known-Revision': _revision,
     }, data: {
@@ -63,8 +63,10 @@ class YandexTodoRestRepository implements Repository {
   }
 
   @override
-  Future<void> change(String id, Task task) async {
-    task.id = id;
+  Future<void> change(String id, TaskFreezed value) async {
+    var task = value.copyWith(
+      id: id,
+    );
     Map<String, dynamic>? data =
         await rest.put(endPoint: '/list/${task.id}', headers: {
       'X-Last-Known-Revision': _revision,
@@ -98,7 +100,7 @@ class YandexTodoRestRepository implements Repository {
   }
 
   @override
-  Future<List<Task>> getAll() async {
+  Future<List<TaskFreezed>> getAll() async {
     Map<String, dynamic> data = await rest.get(endPoint: '/list/');
 
     Log.i('Получены данные: $data');
@@ -107,11 +109,13 @@ class YandexTodoRestRepository implements Repository {
 
     Log.i('Обновлена ревизия: $_revision');
 
-    return List.of(data['list']).map((json) => Task.fromJson(json)).toList();
+    Log.wtf(data);
+
+    return List.of(data['list']).map((json) => TaskFreezed.fromJson(json)).toList();
   }
 
   @override
-  Future<void> replaceAll(List<Task> tasks) async {
+  Future<void> replaceAll(List<TaskFreezed> tasks) async {
     var data = await rest.patch(endPoint: '/list/', headers: {
       'X-Last-Known-Revision': _revision,
     }, data: {
@@ -137,6 +141,5 @@ class YandexTodoRestRepository implements Repository {
       Log.e(exception.message);
     }
 
-    //throw exception;
   }
 }

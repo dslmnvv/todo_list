@@ -1,5 +1,5 @@
 import '../_common/log_handler.dart';
-import '../domain/models/task.dart';
+import '../domain/models/task_freezed.dart';
 
 class NavigationState {
   final bool? _unknown;
@@ -13,7 +13,7 @@ class NavigationState {
 
   bool get isAddTask => _addTask == true;
 
-  Task? task;
+  TaskFreezed? task;
 
   bool get isRoot => !isChangeTask && !isUnknown && !isAddTask;
 

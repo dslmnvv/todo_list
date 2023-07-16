@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/src/domain/models/task.dart';
 import 'package:todo_list/src/presentation/pages/add_task_page.dart';
 import 'package:todo_list/src/presentation/pages/home_page.dart';
 import 'package:todo_list/src/routing/navigation_state.dart';
 
 import '../_common/log_handler.dart';
+import '../domain/models/task_freezed.dart';
 
 class MyRouterDelegate extends RouterDelegate<NavigationState>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<NavigationState> {
@@ -73,7 +73,7 @@ class MyRouterDelegate extends RouterDelegate<NavigationState>
     notifyListeners();
   }
 
-  _openChangeTask(Task task) {
+  _openChangeTask(TaskFreezed task) {
     Log.d('open Change Task, task = $task');
     state = NavigationState.changeTask(task: task);
     notifyListeners();

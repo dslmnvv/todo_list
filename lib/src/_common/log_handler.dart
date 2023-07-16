@@ -25,19 +25,19 @@ class Log {
         break;
       case Level.info:
         if (kDebugMode) console.i(message, error, stackTrace);
-        _logEvent(level, message);
+   //     _logEvent(level, message);
         break;
       case Level.warning:
         if (kDebugMode) console.w(message, error, stackTrace);
-        _logEvent(level, message);
+    //    _logEvent(level, message);
         break;
       case Level.error:
         if (kDebugMode) console.e(message, error, stackTrace);
-        _logEvent(level, message);
+     //   _logEvent(level, message);
         break;
       case Level.wtf:
         if (kDebugMode) console.wtf(message, error, stackTrace);
-        _logEvent(level, message);
+     //   _logEvent(level, message);
         break;
       case Level.nothing:
         if (kDebugMode) console.v(message, error, stackTrace);

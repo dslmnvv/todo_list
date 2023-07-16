@@ -1,21 +1,46 @@
 import 'package:flutter/material.dart';
 
 class StyleColor {
-  var separator = const Color.fromRGBO(0, 0, 0, 0.2);
-  var overlay = const Color.fromRGBO(0, 0, 0, 0.06);
+  final main = MainKitColor();
+  final dark = DarkKitColor();
+}
 
-  var primary = const Color.fromRGBO(0, 0, 0, 1);
-  var secondary = const Color.fromRGBO(0, 0, 0, 0.6);
-  var tertiary = const Color.fromRGBO(0, 0, 0, 0.3);
-  var disable = const Color.fromRGBO(0, 0, 0, 0.15);
+class MainKitColor{
+  final separator = const Color.fromRGBO(0, 0, 0, 0.2);
+  final overlay = const Color.fromRGBO(0, 0, 0, 0.06);
 
-  var red = const Color.fromRGBO(255, 59, 48, 1);
-  var green = const Color.fromRGBO(52, 199, 89, 1);
-  var blue = const Color.fromRGBO(0, 122, 255, 1);
-  var gray = const Color.fromRGBO(142, 142, 147, 1);
-  var grayLight = const Color.fromRGBO(209, 209, 214, 1);
+  final primary = const Color.fromRGBO(0, 0, 0, 1);
+  final secondary = const Color.fromRGBO(0, 0, 0, 0.6);
+  final tertiary = const Color.fromRGBO(0, 0, 0, 0.3);
+  final disable = const Color.fromRGBO(0, 0, 0, 0.15);
 
-  var backPrimary = const Color.fromRGBO(247, 246, 242, 1);
-  var backSecondary = const Color.fromRGBO(255, 255, 255, 1);
-  var backLight = const Color.fromRGBO(255, 255, 255, 1);
+  final red = const Color.fromRGBO(255, 59, 48, 1);
+  final green = const Color.fromRGBO(52, 199, 89, 1);
+  final blue = const Color.fromRGBO(0, 122, 255, 1);
+  final gray = const Color.fromRGBO(142, 142, 147, 1);
+  final grayLight = const Color.fromRGBO(209, 209, 214, 1);
+
+  final backPrimary = const Color.fromRGBO(247, 246, 242, 1);
+  final backSecondary = const Color.fromRGBO(255, 255, 255, 1);
+  final backLight = const Color.fromRGBO(255, 255, 255, 1);
+}
+
+class DarkKitColor{
+  final separator = const Color.fromRGBO(255, 255, 255, 0.2);
+  final overlay = const Color.fromRGBO(0, 0, 0, 0.32);
+
+  final primary = const Color.fromRGBO(255, 255, 255, 1);
+  final secondary = const Color.fromRGBO(255, 255, 255, 0.6);
+  final tertiary = const Color.fromRGBO(255, 255, 255, 0.4);
+  final disable = const Color.fromRGBO(255, 255, 255, 0.15);
+
+  final red = const Color.fromRGBO(255, 69, 58, 1);
+  final green = const Color.fromRGBO(52, 215, 75, 1);
+  final blue = const Color.fromRGBO(10, 132, 255, 1);
+  final gray = const Color.fromRGBO(142, 142, 147, 1);
+  final grayLight = const Color.fromRGBO(72, 72, 74, 1);
+
+  final backPrimary = const Color.fromRGBO(22, 22, 24, 1);
+  final backSecondary = const Color.fromRGBO(37, 37, 40, 1);
+  final backLight = const Color.fromRGBO(60, 60, 63, 1);
 }

@@ -25,7 +25,7 @@ class TodoListApp extends StatelessWidget {
       supportedLocales: S.all,
       //  navigatorKey: NavigationService.navigatorKey,
       theme: StyleLibrary.theme.main,
-      darkTheme: StyleLibrary.theme.main, //todo: изменить тему
+      darkTheme: StyleLibrary.theme.dark,
       debugShowCheckedModeBanner: false,
       title: 'To-Do list',
       //onGenerateRoute: NavigationService.onGenerateRoute,

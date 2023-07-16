@@ -5,8 +5,9 @@ import 'package:todo_list/src/domain/models/task.dart';
 import 'package:todo_list/src/presentation/pages/appbar/custom_app_bar.dart';
 import 'package:todo_list/src/presentation/providers/home_provider.dart';
 import 'package:todo_list/src/presentation/style/style_library.dart';
-import 'package:todo_list/src/presentation/style/theme/style_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
+
+import '../style/theme/app_theme_extension.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage(
@@ -64,8 +65,8 @@ class _HomePageState extends State<HomePage> {
                               return Container(
                                 decoration: BoxDecoration(
                                     color: Theme.of(context)
-                                        .colorScheme
-                                        .backSecondary,
+                                        .extension<AppThemeExtension>()
+                                        ?.backSecondary,
                                     borderRadius: const BorderRadius.only(
                                         bottomLeft: Radius.circular(8),
                                         bottomRight: Radius.circular(8))),
@@ -81,11 +82,7 @@ class _HomePageState extends State<HomePage> {
                                         AppLocalizations.of(context)!.newk,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .headlineMedium
-                                            ?.copyWith(
-                                              color:
-                                                  StyleLibrary.color.tertiary,
-                                            ),
+                                            .headlineMedium,
                                       ),
                                     ),
                                   ],
@@ -222,7 +219,7 @@ class _DismissibleCardState extends State<DismissibleCard> {
     return Dismissible(
       key: UniqueKey(),
       background: Container(
-          color: StyleLibrary.color.green,
+          color: Theme.of(context).extension<AppThemeExtension>()?.green,
           child: const Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Row(
@@ -237,7 +234,7 @@ class _DismissibleCardState extends State<DismissibleCard> {
             ),
           )),
       secondaryBackground: Container(
-          color: StyleLibrary.color.red,
+          color: Theme.of(context).extension<AppThemeExtension>()?.red,
           child: const Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Row(
@@ -321,7 +318,8 @@ class _TaskCardState extends State<TaskCard> {
     return Container(
       decoration: BoxDecoration(
           borderRadius: border,
-          color: Theme.of(context).colorScheme.backSecondary),
+          color:
+              Theme.of(context).extension<AppThemeExtension>()?.backSecondary),
       child: Column(
         children: [
           Row(
@@ -332,12 +330,15 @@ class _TaskCardState extends State<TaskCard> {
                   Checkbox(
                     fillColor: (widget.task.importance == Priority.important)
                         ? Theme.of(context)
-                            .colorScheme
-                            .highPrioryCheckBox
+                            .extension<AppThemeExtension>()
+                            ?.highPrioryCheckBox
                             .fillColor
                         : Theme.of(context).checkboxTheme.fillColor,
                     side: (widget.task.importance == Priority.important)
-                        ? Theme.of(context).colorScheme.highPrioryCheckBox.side
+                        ? Theme.of(context)
+                            .extension<AppThemeExtension>()
+                            ?.highPrioryCheckBox
+                            .side
                         : Theme.of(context).checkboxTheme.side,
                     value: isComplete,
                     onChanged: changeStatus,
@@ -360,7 +361,7 @@ class _TaskCardState extends State<TaskCard> {
                                     .bodyMedium
                                     ?.copyWith(
                                       fontSize: 20,
-                                      color: StyleLibrary.color.red,
+                                      color: Theme.of(context).extension<AppThemeExtension>()?.red,
                                     ),
                               ),
                             )
@@ -370,7 +371,7 @@ class _TaskCardState extends State<TaskCard> {
                               padding: const EdgeInsets.only(right: 5),
                               child: Icon(
                                 Icons.arrow_downward,
-                                color: StyleLibrary.color.tertiary,
+                                color:  Theme.of(context).extension<AppThemeExtension>()?.icon,
                               ))
                           : const SizedBox(),
                       Column(
@@ -384,7 +385,7 @@ class _TaskCardState extends State<TaskCard> {
                                   ?.copyWith(
                                     overflow: TextOverflow.ellipsis,
                                     color: (isComplete)
-                                        ? StyleLibrary.color.tertiary
+                                        ?  Theme.of(context).extension<AppThemeExtension>()?.icon
                                         : Theme.of(context)
                                             .textTheme
                                             .bodyMedium
@@ -402,8 +403,6 @@ class _TaskCardState extends State<TaskCard> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .headlineMedium
-                                        ?.copyWith(
-                                            color: StyleLibrary.color.tertiary),
                                   ),
                                 )
                               : const SizedBox(),
@@ -420,7 +419,7 @@ class _TaskCardState extends State<TaskCard> {
                   onPressed: widget.openChangeTask,
                   icon: Icon(
                     Icons.info_outline,
-                    color: StyleLibrary.color.tertiary,
+                    color: Theme.of(context).extension<AppThemeExtension>()?.icon,
                   ),
                 ),
               )

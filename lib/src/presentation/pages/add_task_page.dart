@@ -5,14 +5,12 @@ import 'package:todo_list/src/domain/models/task.dart';
 import 'package:todo_list/src/presentation/pages/appbar/light_app_bar.dart';
 import 'package:todo_list/src/presentation/providers/add_task_provider.dart';
 import 'package:todo_list/src/presentation/style/style_library.dart';
-import 'package:todo_list/src/presentation/style/theme/style_theme.dart';
 import 'package:todo_list/src/routing/navigation_service.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
-
 import '../../_common/log_handler.dart';
-
 import '../../data/api/device/device_info.dart';
+import '../style/theme/app_theme_extension.dart';
 
 class TaskArgs {
   final Task? task;
@@ -32,14 +30,13 @@ class AddTaskPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     Log.d('AddTaskPage: task = $task');
 
     return ChangeNotifierProvider(
-        create: (context) =>
-            AddTaskProvider(task ?? Task.empty(
-                id: const Uuid().v1(),
-                deviceId: GetIt.instance<DeviceInfo>().id,
+        create: (context) => AddTaskProvider(task ??
+            Task.empty(
+              id: const Uuid().v1(),
+              deviceId: GetIt.instance<DeviceInfo>().id,
             )),
         child: Builder(
           builder: (context) {
@@ -51,7 +48,10 @@ class AddTaskPage extends StatelessWidget {
                     constraints: const BoxConstraints(),
                     padding: EdgeInsets.zero,
                     onPressed: NavigationService.pop,
-                    icon: Icon(Icons.clear, color: StyleLibrary.color.primary),
+                    icon: Icon(Icons.clear,
+                        color: Theme.of(context)
+                            .extension<AppThemeExtension>()
+                            ?.backButton),
                   ),
                   right: Material(
                     color: Colors.transparent,
@@ -118,7 +118,7 @@ class DescriptionField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       elevation: 5,
-      shadowColor: StyleLibrary.color.secondary,
+      shadowColor: StyleLibrary.color.main.secondary,
       color: Colors.transparent,
       child: TextFormField(
           initialValue: initialValue,
@@ -127,11 +127,17 @@ class DescriptionField extends StatelessWidget {
           maxLines: 15,
           onChanged: onChanged,
           decoration: StyleLibrary.input.main.copyWith(
-              fillColor: Theme.of(context).colorScheme.backSecondary,
-              hintText: AppLocalizations.of(context)!.whatNeed,
-              hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: StyleLibrary.color.tertiary,
-                  ))),
+            fillColor:
+                Theme.of(context).extension<AppThemeExtension>()?.backSecondary,
+            hintText: AppLocalizations.of(context)!.whatNeed,
+            hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.color
+                      ?.withOpacity(0.5),
+                ),
+          )),
     );
   }
 }
@@ -173,6 +179,9 @@ class _PriorityContainerState extends State<PriorityContainer> {
             style: Theme.of(context).textTheme.bodyMedium),
         StyleLibrary.padding.hBoxMini,
         DropdownButton(
+          dropdownColor: Theme.of(context)
+              .extension<AppThemeExtension>()
+              ?.dropDownMenuColor,
           underline: const SizedBox(),
           icon: const SizedBox(),
           value: priority.nameField,
@@ -192,7 +201,9 @@ class _PriorityContainerState extends State<PriorityContainer> {
                                 .textTheme
                                 .bodyMedium
                                 ?.copyWith(
-                                  color: StyleLibrary.color.red,
+                                  color: Theme.of(context)
+                                      .extension<AppThemeExtension>()
+                                      ?.red,
                                 ),
                           ),
                           const SizedBox(
@@ -216,9 +227,7 @@ class _PriorityContainerState extends State<PriorityContainer> {
                       value: value,
                       child: Text(
                         value,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: StyleLibrary.color.tertiary,
-                            ),
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ));
                 }
             }
@@ -287,6 +296,12 @@ class _DatePickerContainerState extends State<DatePickerContainer> {
                         lastDate: DateTime(now.year + 99),
                         initialDate: DateTime.now(),
                         context: context,
+                        builder: (context, child){
+                          return Theme(
+                              data: Theme.of(context).extension<AppThemeExtension>()!.datePickerTheme,
+                              child: child!
+                          );
+                        }
                       ).then((value) {
                         if (value != null) {
                           widget.onSelect(value);
@@ -324,12 +339,15 @@ class DeleteButton extends StatelessWidget {
         style: (onRemove != null)
             ? TextButton.styleFrom(
                 padding: EdgeInsets.zero,
-                foregroundColor: StyleLibrary.color.red,
+                foregroundColor:
+                    Theme.of(context).extension<AppThemeExtension>()?.red,
               )
             : TextButton.styleFrom(
                 padding: EdgeInsets.zero,
-                foregroundColor: StyleLibrary.color.disable,
-                iconColor: StyleLibrary.color.disable,
+                foregroundColor:
+                    Theme.of(context).extension<AppThemeExtension>()?.icon,
+                iconColor:
+                    Theme.of(context).extension<AppThemeExtension>()?.icon,
               ),
         onPressed: onRemove,
         child: Row(
@@ -341,10 +359,11 @@ class DeleteButton extends StatelessWidget {
             const SizedBox(width: 10),
             Text(AppLocalizations.of(context)!.remove,
                 style: StyleLibrary.font.button.copyWith(
-                  color: (onRemove == null)
-                      ? StyleLibrary.color.disable
-                      : StyleLibrary.color.red,
-                )),
+                    color: (onRemove == null)
+                        ? Theme.of(context).extension<AppThemeExtension>()?.icon
+                        : Theme.of(context)
+                            .extension<AppThemeExtension>()
+                            ?.red)),
           ],
         ));
   }

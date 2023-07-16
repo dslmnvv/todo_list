@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:todo_list/src/presentation/style/style_library.dart';
-import 'package:todo_list/src/presentation/style/theme/style_theme.dart';
+import 'package:todo_list/src/presentation/style/theme/app_theme_extension.dart';
 
 class CustomAppBarDelegate implements SliverPersistentHeaderDelegate {
   @override
@@ -29,7 +29,7 @@ class CustomAppBarDelegate implements SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       padding: StyleLibrary.padding.appBar,
-      color: Theme.of(context).colorScheme.backPrimary,
+      color: Theme.of(context).extension<AppThemeExtension>()?.backPrimary,
       child: Stack(
         fit: StackFit.expand,
         children: [
@@ -49,10 +49,13 @@ class CustomAppBarDelegate implements SliverPersistentHeaderDelegate {
             bottom: getYPosition(shrinkOffset),
             child: Text(
               subTitle,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontSize: getReduction(shrinkOffset, 16, 8),
-                  color: StyleLibrary.color.tertiary
-                      .withOpacity(titleOpacity(shrinkOffset))),
+                  color: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.color
+                      ?.withOpacity(titleOpacity(shrinkOffset))),
             ),
           ),
           Positioned(

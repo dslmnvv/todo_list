@@ -6,14 +6,14 @@ class StyleFont {
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w500,
     fontSize: 32,
-    color: StyleLibrary.color.primary,
+    color: StyleLibrary.color.main.primary,
   );
   var title = TextStyle(
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w500,
     fontSize: 20,
     letterSpacing: 0.5,
-    color: StyleLibrary.color.primary,
+    color: StyleLibrary.color.main.primary,
   );
 
   var button = TextStyle(
@@ -21,19 +21,19 @@ class StyleFont {
     fontWeight: FontWeight.w500,
     fontSize: 14,
     letterSpacing: 0.16,
-    color: StyleLibrary.color.primary,
+    color: StyleLibrary.color.main.primary,
   );
 
   var body = TextStyle(
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w400,
-    color: StyleLibrary.color.primary,
+    color: StyleLibrary.color.main.primary,
   );
 
   var subhead = TextStyle(
     fontFamily: 'Roboto',
     fontWeight: FontWeight.w400,
     fontSize: 14,
-    color: StyleLibrary.color.primary,
+    color: StyleLibrary.color.main.primary,
   );
 }

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:todo_list/src/domain/models/task.dart';
 import 'package:todo_list/src/presentation/pages/appbar/light_app_bar.dart';
 import 'package:todo_list/src/presentation/providers/add_task_provider.dart';
+import 'package:todo_list/src/presentation/providers/config_provider.dart';
 import 'package:todo_list/src/presentation/style/style_library.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
@@ -166,6 +167,9 @@ class _PriorityContainerState extends State<PriorityContainer> {
 
   @override
   Widget build(BuildContext context) {
+
+    var config = context.watch<ConfigProvider>();
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,9 +200,7 @@ class _PriorityContainerState extends State<PriorityContainer> {
                                 .textTheme
                                 .bodyMedium
                                 ?.copyWith(
-                                  color: Theme.of(context)
-                                      .extension<AppThemeExtension>()
-                                      ?.red,
+                                  color: config.importance
                                 ),
                           ),
                           const SizedBox(

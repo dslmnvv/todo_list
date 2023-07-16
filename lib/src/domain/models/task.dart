@@ -66,7 +66,6 @@ class Task {
   }
 
   factory Task.fromSql(Map<String, dynamic> json) {
-    Log.i('$json');
     return Task(
       id: json["uuid"],
       text: json["description"],

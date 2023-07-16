@@ -6,6 +6,8 @@ import 'package:todo_list/src/domain/models/task.dart';
 import 'package:todo_list/src/presentation/providers/home_provider.dart';
 import 'package:todo_list/src/routing/navigation_service.dart';
 
+import '../../_common/log_handler.dart';
+
 class AddTaskProvider with ChangeNotifier {
   static const dName = 'AddTaskProvider';
 
@@ -53,6 +55,7 @@ class AddTaskProvider with ChangeNotifier {
     if (task.text.isNotEmpty) {
       var home = NavigationService.context.read<HomeProvider>();
       home.addTask(task);
+      Log.i('Task $task saved');
       onBack();
     } else {
       log('Description is empty : ${task.text}', name: dName);
@@ -60,18 +63,18 @@ class AddTaskProvider with ChangeNotifier {
           context: NavigationService.context,
           builder: (context) {
             return  AlertDialog(
-              content: Text(
+              content: const Text(
                 'Заполни хотя бы описание 🙏🏻',
                 textAlign: TextAlign.center,
               ),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text('ок'),
+                  child: const Text('ок'),
                 ),
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text('ну ок'),
+                  child: const Text('ну ок'),
                 ),
               ],
             );
@@ -82,14 +85,14 @@ class AddTaskProvider with ChangeNotifier {
   onRemove(Task task, Function() onBack) {
     var home = NavigationService.context.read<HomeProvider>();
     home.removeTask(task);
+    Log.i('Task $task removed');
     onBack();
-    //NavigationService.pop();
   }
 
   change(Task task, Function() onBack) {
     var home = NavigationService.context.read<HomeProvider>();
     home.changeTask(task);
+    Log.i('Task $task changed');
     onBack();
-    //NavigationService.pop();
   }
 }

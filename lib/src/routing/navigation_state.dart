@@ -1,3 +1,4 @@
+import '../_common/log_handler.dart';
 import '../domain/models/task.dart';
 
 class NavigationState {
@@ -19,22 +20,30 @@ class NavigationState {
   NavigationState.unknown()
       : _unknown = true,
         _addTask = false,
-        _changeTask = false;
+        _changeTask = false{
+    Log.i('Change page: unknown');
+  }
 
   NavigationState.root()
       : _unknown = false,
         _addTask = false,
-        _changeTask = false;
+        _changeTask = false{
+    Log.i('Change page: root');
+  }
 
   NavigationState.addTask()
       : _unknown = false,
         _addTask = true,
-        _changeTask = false;
+        _changeTask = false{
+    Log.i('Change page: addTask');
+  }
 
   NavigationState.changeTask({required this.task})
       : _unknown = false,
         _addTask = false,
-        _changeTask = true;
+        _changeTask = true{
+    Log.i('Change page: changeTask');
+  }
 
 
 }

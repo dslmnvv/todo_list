@@ -38,3 +38,4 @@
 
 ## Release
 - [last release apk](https://github.com/dslmnvv/todo_list/releases/download/not-stable/app-release.apk)
+- [Firebase Distribution invite](https://appdistribution.firebase.dev/i/9ef49d7dd6f7ec1c)

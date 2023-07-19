@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_list/flavor_config/config_provider.dart';
+import 'package:todo_list/flavor_config/flavor_config.dart';
 import 'package:todo_list/src/presentation/style/style_library.dart';
 import 'package:todo_list/src/routing/navigation_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -12,6 +15,9 @@ class TodoListApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final config = context.read<FlavorConfigProvider>();
+
     return MaterialApp.router(
       localizationsDelegates: const [
         AppLocalizations.delegate,
@@ -26,7 +32,7 @@ class TodoListApp extends StatelessWidget {
       theme: StyleLibrary.theme.main,
       darkTheme: StyleLibrary.theme.dark,
       debugShowCheckedModeBanner: false,
-      title: 'To-Do list',
+      title: config.config.appTitle,
     );
   }
 }

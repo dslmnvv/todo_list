@@ -64,6 +64,23 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    flavorDimensions "app"
+
+    productFlavors {
+        production {
+            dimension "app"
+            applicationId "ru.carrot.app"
+            versionCode 1
+            versionName "1.0"
+        }
+        development {
+            dimension "app"
+            applicationId "ru.carrot.app"
+            versionCode 1
+            versionName "1.0"
+        }
+    }
 }
 
 flutter {

@@ -7,17 +7,6 @@
 <img src=https://github.com/dslmnvv/todo_list/assets/80068688/e20f99c1-438a-492d-8da1-6ed988e544a9) width="250" height="250">
 </p>
 
-# Информация для проверяющих !
-1. Оффлайн режим. Приложение умеет работать без интернета. При отключении от интернета - задачи продолжают сохраняться в локальную память устройства. При включении интернета - задачи обновляются на сервере.
-  - Если на сервере нашлась более актууальная версия данных, то локальные дданные перезапишутся.
-  - Если локальные данные актуальнее серверных, то перезапишутся серверные данные.
-2. Deep Links.
-  - Добавить задачу app://ru.carrot.app/addTask
-  - Редактировать задачу app://ru.carrot.app/changeTask/{id} (Шаблон: 295c03f0-1b94-11ee-99d1-c1c2d7aceb14, 76af3e10-1b94-11ee-99d1-c1c2d7aceb14)
-  - Могут запускаться с уубитого приложения
-3. Обновление. Для удобства в приложении можно обновить данные. Для этого нужно потянуть главный список вниз.
-
-
 
 
 ## Main features
@@ -29,6 +18,10 @@
 - Refresh data
 - Offline mode
 - Deeep Links
+- Night Theme
+- Firebase Crashlytics
+- Firebase Metrics
+
 
 
 
@@ -45,3 +38,4 @@
 
 ## Release
 - [last release apk](https://github.com/dslmnvv/todo_list/releases/download/not-stable/app-release.apk)
+- [Firebase Distribution invite](https://appdistribution.firebase.dev/i/9ef49d7dd6f7ec1c)

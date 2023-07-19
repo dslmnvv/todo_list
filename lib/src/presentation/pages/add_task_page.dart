@@ -1,32 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_list/src/domain/models/task.dart';
 import 'package:todo_list/src/presentation/pages/appbar/light_app_bar.dart';
 import 'package:todo_list/src/presentation/providers/add_task_provider.dart';
+import 'package:todo_list/src/presentation/providers/config_provider.dart';
 import 'package:todo_list/src/presentation/style/style_library.dart';
-import 'package:todo_list/src/routing/navigation_service.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
 import '../../_common/log_handler.dart';
 import '../../data/api/device/device_info.dart';
+import '../../domain/models/task_freezed.dart';
 import '../style/theme/app_theme_extension.dart';
 
-class TaskArgs {
-  final Task? task;
-  final int? index;
-
-  TaskArgs(this.task, this.index);
-}
 
 class AddTaskPage extends StatelessWidget {
   const AddTaskPage({
     Key? key,
     this.task,
+    required this.onBack
   }) : super(key: key);
 
   static const routeName = 'add_task_page';
-  final Task? task;
+  final TaskFreezed? task;
+  final Function() onBack;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +30,7 @@ class AddTaskPage extends StatelessWidget {
 
     return ChangeNotifierProvider(
         create: (context) => AddTaskProvider(task ??
-            Task.empty(
+            TaskFreezed.empty(
               id: const Uuid().v1(),
               deviceId: GetIt.instance<DeviceInfo>().id,
             )),
@@ -47,7 +43,7 @@ class AddTaskPage extends StatelessWidget {
                   left: IconButton(
                     constraints: const BoxConstraints(),
                     padding: EdgeInsets.zero,
-                    onPressed: NavigationService.pop,
+                    onPressed: onBack,
                     icon: Icon(Icons.clear,
                         color: Theme.of(context)
                             .extension<AppThemeExtension>()
@@ -60,8 +56,8 @@ class AddTaskPage extends StatelessWidget {
                         padding: const EdgeInsets.all(5),
                       ),
                       onPressed: (task != null)
-                          ? () => state.change(task!)
-                          : state.save,
+                          ? () => state.change(onBack)
+                          : () => state.save(onBack),
                       child: Text(AppLocalizations.of(context)!.save),
                     ),
                   ),
@@ -93,7 +89,7 @@ class AddTaskPage extends StatelessWidget {
                         const Divider(),
                         DeleteButton(
                           onRemove: (task != null)
-                              ? () => state.onRemove(task!)
+                              ? () => state.onRemove(task!, onBack)
                               : null,
                         ),
                         StyleLibrary.padding.hBox,
@@ -171,6 +167,9 @@ class _PriorityContainerState extends State<PriorityContainer> {
 
   @override
   Widget build(BuildContext context) {
+
+    var config = context.watch<ConfigProvider>();
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -201,9 +200,7 @@ class _PriorityContainerState extends State<PriorityContainer> {
                                 .textTheme
                                 .bodyMedium
                                 ?.copyWith(
-                                  color: Theme.of(context)
-                                      .extension<AppThemeExtension>()
-                                      ?.red,
+                                  color: config.importance
                                 ),
                           ),
                           const SizedBox(

@@ -2,7 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_list/src/_common/log_handler.dart';
 import 'package:todo_list/src/data/api/storage/sql/sql_storage.dart';
 import 'package:todo_list/src/data/api/storage/storage.dart';
-import 'package:todo_list/src/domain/models/task.dart';
+import 'package:todo_list/src/domain/models/task_freezed.dart';
 
 import '../repository.dart';
 
@@ -20,7 +20,7 @@ class StorageTodoRepository implements Repository {
       {required this.key, required this.by, required this.revision});
 
   @override
-  Future<void> add(Task task) async {
+  Future<void> add(TaskFreezed task) async {
     if (_storage.runtimeType == SqlStorage) {
       await _storage.add(key: key, data: task.toSQLRequest());
     } else {
@@ -30,8 +30,10 @@ class StorageTodoRepository implements Repository {
   }
 
   @override
-  Future<void> change(String id, Task task) async {
-    task.id = id;
+  Future<void> change(String id, TaskFreezed value) async {
+    var task = value.copyWith(
+      id: id,
+    );
 
     if (_storage.runtimeType == SqlStorage) {
       id = "'$id'";
@@ -63,7 +65,7 @@ class StorageTodoRepository implements Repository {
   }
 
   @override
-  Future<Task?> get(String id) async {
+  Future<TaskFreezed?> get(String id) async {
     Log.w('key = [ $key ]');
 
     if (_storage.runtimeType == SqlStorage) {
@@ -71,26 +73,26 @@ class StorageTodoRepository implements Repository {
       id = "'$id'";
 
       var data = await _storage.get(key: key, value: id, by: by);
-      return  (data != null) ? Task.fromSql(data) : null;
+      return  (data != null) ? TaskFreezed.fromSql(data) : null;
     } else {
       var data = await _storage.get(key: key, value: id, by: by);
-      return (data != null) ? Task.fromJson(data) : null;
+      return (data != null) ? TaskFreezed.fromJson(data) : null;
     }
   }
 
   @override
-  Future<List<Task>> getAll() async {
+  Future<List<TaskFreezed>> getAll() async {
     if (_storage.runtimeType == SqlStorage) {
       var data = await _storage.getAll(key: key);
-      return List.of(data).map((e) => Task.fromSql(e)).toList();
+      return List.of(data).map((e) => TaskFreezed.fromSql(e)).toList();
     } else {
       var data = await _storage.getAll(key: key);
-      return List.of(data).map((e) => Task.fromJson(e)).toList();
+      return List.of(data).map((e) => TaskFreezed.fromJson(e)).toList();
     }
   }
 
   @override
-  Future<void> replaceAll(List<Task> tasks) async {
+  Future<void> replaceAll(List<TaskFreezed> tasks) async {
     if (_storage.runtimeType == SqlStorage) {
       await _storage.replaceAll(
           key: key, data: List.of(tasks).map((e) => e.toSQLRequest()).toList());

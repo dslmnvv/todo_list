@@ -1,21 +1,26 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_list/src/domain/models/task.dart';
 import 'package:todo_list/src/presentation/providers/home_provider.dart';
 import 'package:todo_list/src/routing/navigation_service.dart';
+import '../../_common/log_handler.dart';
+import '../../domain/models/task_freezed.dart';
+
 
 class AddTaskProvider with ChangeNotifier {
   static const dName = 'AddTaskProvider';
 
-  Task task;
+  TaskFreezed task;
 
   AddTaskProvider(this.task);
 
   void onChanged(String? value) {
     if (value != null) {
-      task.text = value;
+      task = task.copyWith(
+        text: value,
+      );
+      Log.wtf('Заменен текст на ${task.text}');
+    //  task.text = value;
       notifyListeners();
     }
     log('Change description : $value', name: dName);
@@ -23,55 +28,73 @@ class AddTaskProvider with ChangeNotifier {
 
   void selectPriority(Priority priority) {
     if (priority != Priority.basic) {
-      task.importance = priority;
+      task = task.copyWith(
+        importance: priority,
+      );
+
+      //task.importance = priority;
+
       notifyListeners();
       log('Set Priority : $priority', name: dName);
     } else {
-      task.importance = Priority.basic;
+      task = task.copyWith(
+        importance: Priority.basic,
+      );
+     // task.importance = Priority.basic;
       log('Clear Priority : ${task.importance}', name: dName);
     }
   }
 
   void selectDate(DateTime dateTime) {
-    task.deadline = dateTime;
+    task = task.copyWith(
+      deadline: dateTime,
+    );
+    //task.deadline = dateTime;
     notifyListeners();
     log('Set Date : $dateTime', name: dName);
   }
 
   void switchDate(bool value) {
     if (!value) {
-      task.deadline = null;
+      task = task.copyWith(
+        deadline: null,
+      );
+     // task.deadline = null;
       notifyListeners();
       log('Clear Date', name: dName);
     } else {
-      task.deadline = DateTime.now();
+      task = task.copyWith(
+        deadline: DateTime.now(),
+      );
+      //task.deadline = DateTime.now();
       log('Switch Date : ${task.deadline}', name: dName);
     }
   }
 
-  save() {
+  save(Function() onBack) {
     if (task.text.isNotEmpty) {
       var home = NavigationService.context.read<HomeProvider>();
       home.addTask(task);
-      NavigationService.pop();
+      Log.i('Task $task saved');
+      onBack();
     } else {
       log('Description is empty : ${task.text}', name: dName);
       showDialog(
           context: NavigationService.context,
           builder: (context) {
-            return const AlertDialog(
-              content: Text(
+            return  AlertDialog(
+              content: const Text(
                 'Заполни хотя бы описание 🙏🏻',
                 textAlign: TextAlign.center,
               ),
               actions: [
                 TextButton(
-                  onPressed: NavigationService.pop,
-                  child: Text('ок'),
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('ок'),
                 ),
                 TextButton(
-                  onPressed: NavigationService.pop,
-                  child: Text('ну ок'),
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('ну ок'),
                 ),
               ],
             );
@@ -79,15 +102,17 @@ class AddTaskProvider with ChangeNotifier {
     }
   }
 
-  onRemove(Task task) {
+  onRemove(TaskFreezed task, Function() onBack) {
     var home = NavigationService.context.read<HomeProvider>();
     home.removeTask(task);
-    NavigationService.pop();
+    Log.i('Task $task removed');
+    onBack();
   }
 
-  void change(Task task) {
+  change(Function() onBack) {
     var home = NavigationService.context.read<HomeProvider>();
     home.changeTask(task);
-    NavigationService.pop();
+    Log.i('Task $task changed');
+    onBack();
   }
 }

@@ -1,6 +1,5 @@
 import 'package:todo_list/src/_common/log_handler.dart';
-import 'package:todo_list/src/domain/models/task.dart';
-
+import '../../../../domain/models/task_freezed.dart';
 import '../repository.dart';
 
 class TodoRepository implements Repository {
@@ -17,7 +16,7 @@ class TodoRepository implements Repository {
       {required this.storage, required this.rest, this.revision = 0});
 
   @override
-  Future<void> add(Task task) async {
+  Future<void> add(TaskFreezed task) async {
     try {
       await storage.add(task);
       await rest.add(task);
@@ -29,7 +28,7 @@ class TodoRepository implements Repository {
   }
 
   @override
-  Future<void> change(String id, Task task) async {
+  Future<void> change(String id, TaskFreezed task) async {
     try {
       await storage.change(id, task);
       await rest.change(id, task);
@@ -53,13 +52,13 @@ class TodoRepository implements Repository {
   }
 
   @override
-  Future<Task?> get(String id) async {
+  Future<TaskFreezed?> get(String id) async {
     //Здесь мы полагаемся на то, что загрузили уже все данные с сервера
     return await storage.get(id);
   }
 
   @override
-  Future<List<Task>> getAll() async {
+  Future<List<TaskFreezed>> getAll() async {
     try {
       Log.i('Обновляю все данные');
 
@@ -72,12 +71,12 @@ class TodoRepository implements Repository {
   }
 
   @override
-  Future<void> replaceAll(List<Task> tasks) async {
+  Future<void> replaceAll(List<TaskFreezed> tasks) async {
     await rest.replaceAll(tasks);
     await storage.replaceAll(tasks);
   }
 
-  Future<List<Task>> revisionHandler() async {
+  Future<List<TaskFreezed>> revisionHandler() async {
     Log.w('storage revision: ${storage.revision} \n'
         'rest.revision: ${rest.revision} \n');
 

@@ -1,12 +1,13 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_list/src/domain/models/task.dart';
 import 'package:todo_list/src/presentation/pages/appbar/custom_app_bar.dart';
+import 'package:todo_list/src/presentation/providers/config_provider.dart';
 import 'package:todo_list/src/presentation/providers/home_provider.dart';
 import 'package:todo_list/src/presentation/style/style_library.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
-
+import '../../_common/log_handler.dart';
+import '../../domain/models/task_freezed.dart';
 import '../style/theme/app_theme_extension.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,7 +16,7 @@ class HomePage extends StatefulWidget {
       : super(key: key);
 
   final Function() onTapAdd;
-  final Function(Task task) openChangeTask;
+  final Function(TaskFreezed task) openChangeTask;
 
   static const String routeName = 'homePage';
 
@@ -204,7 +205,7 @@ class DismissibleCard extends StatefulWidget {
 
   final int index;
   final int len;
-  final Task task;
+  final TaskFreezed task;
   final Function() onDismiss;
   final Function(bool status, int index) onChangeStatus;
   final Function() openChangeTask;
@@ -251,6 +252,7 @@ class _DismissibleCardState extends State<DismissibleCard> {
       onDismissed: (direction) {
         if (direction.name == 'startToEnd') {
           widget.onChangeStatus(true, widget.index);
+          Log.i('Task id: ${widget.task.id} completed');
         } else {
           widget.onDismiss();
         }
@@ -280,7 +282,7 @@ class TaskCard extends StatefulWidget {
 
   final bool isFirst;
   final bool isLast;
-  final Task task;
+  final TaskFreezed task;
   final int index;
   final Function(bool status, int index) onChangeStatus;
   final Function() openChangeTask;
@@ -300,6 +302,9 @@ class _TaskCardState extends State<TaskCard> {
 
   @override
   Widget build(BuildContext context) {
+
+   var config = context.watch<ConfigProvider>();
+
     var border = BorderRadius.zero;
     if (widget.isFirst) {
       border = const BorderRadius.only(
@@ -338,7 +343,9 @@ class _TaskCardState extends State<TaskCard> {
                         ? Theme.of(context)
                             .extension<AppThemeExtension>()
                             ?.highPrioryCheckBox
-                            .side
+                            .side?.copyWith(
+                        color: config.importance
+                    )
                         : Theme.of(context).checkboxTheme.side,
                     value: isComplete,
                     onChanged: changeStatus,
@@ -361,7 +368,7 @@ class _TaskCardState extends State<TaskCard> {
                                     .bodyMedium
                                     ?.copyWith(
                                       fontSize: 20,
-                                      color: Theme.of(context).extension<AppThemeExtension>()?.red,
+                                      color: config.importance,
                                     ),
                               ),
                             )
@@ -371,7 +378,9 @@ class _TaskCardState extends State<TaskCard> {
                               padding: const EdgeInsets.only(right: 5),
                               child: Icon(
                                 Icons.arrow_downward,
-                                color:  Theme.of(context).extension<AppThemeExtension>()?.icon,
+                                color: Theme.of(context)
+                                    .extension<AppThemeExtension>()
+                                    ?.icon,
                               ))
                           : const SizedBox(),
                       Column(
@@ -385,7 +394,9 @@ class _TaskCardState extends State<TaskCard> {
                                   ?.copyWith(
                                     overflow: TextOverflow.ellipsis,
                                     color: (isComplete)
-                                        ?  Theme.of(context).extension<AppThemeExtension>()?.icon
+                                        ? Theme.of(context)
+                                            .extension<AppThemeExtension>()
+                                            ?.icon
                                         : Theme.of(context)
                                             .textTheme
                                             .bodyMedium
@@ -398,12 +409,11 @@ class _TaskCardState extends State<TaskCard> {
                               ? Padding(
                                   padding: const EdgeInsets.only(top: 5),
                                   child: Text(
-                                    StyleLibrary.format.main
-                                        .format(widget.task.deadline!),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineMedium
-                                  ),
+                                      StyleLibrary.format.main
+                                          .format(widget.task.deadline!),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineMedium),
                                 )
                               : const SizedBox(),
                         ],
@@ -419,7 +429,8 @@ class _TaskCardState extends State<TaskCard> {
                   onPressed: widget.openChangeTask,
                   icon: Icon(
                     Icons.info_outline,
-                    color: Theme.of(context).extension<AppThemeExtension>()?.icon,
+                    color:
+                        Theme.of(context).extension<AppThemeExtension>()?.icon,
                   ),
                 ),
               )
@@ -429,6 +440,8 @@ class _TaskCardState extends State<TaskCard> {
       ),
     );
   }
+
+
 
   void changeStatus(bool? value) {
     if (value != null) {

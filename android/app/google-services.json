@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1063024757901",
+    "project_id": "yandex-9dea9",
+    "storage_bucket": "yandex-9dea9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1063024757901:android:9800641c6b6057a2c026c4",
+        "android_client_info": {
+          "package_name": "ru.carrot.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1063024757901-qvprm5m7fj6d7gcmhp786n960m5f1k71.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIAdL-FL7J1fL7K3iRSovT_310b1eKOP8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1063024757901-qvprm5m7fj6d7gcmhp786n960m5f1k71.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1063024757901-rsqntlenhqupbvc6n2civfnlui6rll78.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ru.yandex.school.todolist.app.todoList"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

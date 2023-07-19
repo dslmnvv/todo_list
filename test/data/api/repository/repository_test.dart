@@ -22,7 +22,7 @@ void main() async{
   //Проверяем на наличе добавленной таски
   test('Test rep: add and get task', ()  async {
 
-    final task = mockTasks.first;
+    final task = mockTasksFreezed.first;
 
     await rep.add(task);
 
@@ -37,8 +37,9 @@ void main() async{
   test('Test rep: change task', ()  async {
 
     String changeText = 'Test task change';
-    var task = mockTasks.first;
-    task.text = changeText;
+    var task = mockTasksFreezed.first.copyWith(
+      text: changeText,
+    );
 
     await rep.change(task.id, task);
 
@@ -52,7 +53,7 @@ void main() async{
   //Ожидаем, что данные не будут найдены
   test('Test rep: delete task', ()  async {
 
-    final task = mockTasks.first;
+    final task = mockTasksFreezed.first;
 
     await rep.delete(task.id);
 
@@ -65,7 +66,7 @@ void main() async{
   //Ожидаем, что все данные заменятся
   test('Test rep: replace all tasks', ()  async {
 
-    final tasks = mockTasks;
+    final tasks = mockTasksFreezed;
 
     await rep.replaceAll(tasks);
 

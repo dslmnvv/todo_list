@@ -29,6 +29,7 @@ class AppThemeExtension extends ThemeExtension<AppThemeExtension> with _$AppThem
   @override
   CheckboxThemeData highPrioryCheckBox;
 
+  @override
   ThemeData datePickerTheme;
 
   AppThemeExtension(

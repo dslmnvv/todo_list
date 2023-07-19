@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get_it/get_it.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -9,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:todo_list/src/data/api/device/device_info.dart';
 import 'package:todo_list/src/data/api/device/info_plus/device_info_plus.dart';
+import 'package:todo_list/src/data/api/repository/config_repository.dart';
 import 'package:todo_list/src/data/api/repository/todo/todo_repository.dart';
 import 'package:todo_list/src/const/api/storage/sql/database_const.dart';
 import 'package:todo_list/src/const/api/yandex/yandex_api_const.dart';
@@ -21,7 +23,14 @@ import 'data/api/repository/rest/yandex_todo_rest_repository.dart';
 import 'data/api/repository/storage/storage_todo_repository.dart';
 import 'data/api/storage/sql/sql_storage.dart';
 
-void setupServiceLocator() async {
+Future<void> setupServiceLocator() async {
+
+
+  final configRepo = GetIt.instance.registerSingleton<ConfigRepository>(
+    ConfigRepository(FirebaseRemoteConfig.instance),
+  );
+  await configRepo.init();
+  
   GetIt.instance.registerSingleton<HttpClient>(
     CustomDio(
       Dio(

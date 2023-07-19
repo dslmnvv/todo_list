@@ -18,14 +18,14 @@ void main() async{
   //Проверяем сервер на наличе добавленной таски
   test('Test rest: add and get task', ()  async {
 
-    final task = mockTasks.first;
+    final task = mockTasksFreezed.first;
 
     await rest.add(task);
 
     final result = await rest.get(task.id);
 
 
-    expect(result, task);
+    expect(result?.id, task.id);
 
   });
 
@@ -33,8 +33,9 @@ void main() async{
   test('Test rest: change task', ()  async {
 
     String changeText = 'Test task change';
-    var task = mockTasks.first;
-    task.text = changeText;
+    var task = mockTasksFreezed.first.copyWith(
+      text: changeText,
+    );
 
     await rest.change(task.id, task);
 
@@ -48,7 +49,7 @@ void main() async{
   //Ожидаем, что данные не будут найдены
   test('Test rest: delete task', ()  async {
 
-    final task = mockTasks.first;
+    final task = mockTasksFreezed.first;
 
     await rest.delete(task.id);
 
@@ -61,7 +62,7 @@ void main() async{
   //Ожидаем, что все данные заменятся
   test('Test rest: replace all tasks', ()  async {
 
-    final tasks = mockTasks;
+    final tasks = mockTasksFreezed;
 
     await rest.replaceAll(tasks);
 

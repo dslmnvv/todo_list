@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/src/domain/models/task.dart';
 import 'package:todo_list/src/presentation/pages/add_task_page.dart';
 import 'package:todo_list/src/presentation/pages/home_page.dart';
 import 'package:todo_list/src/routing/navigation_state.dart';
 
 import '../_common/log_handler.dart';
+import '../domain/models/task_freezed.dart';
 
 class MyRouterDelegate extends RouterDelegate<NavigationState>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<NavigationState> {
@@ -25,11 +25,14 @@ class MyRouterDelegate extends RouterDelegate<NavigationState>
           openChangeTask: _openChangeTask,
         )),
         if (state?.isAddTask == true)
-          const MaterialPage(
-              child: AddTaskPage()),
+           MaterialPage(
+              child: AddTaskPage(
+                onBack: _onGoRoot,
+              )),
         if(state?.isChangeTask == true)
           MaterialPage(
               child: AddTaskPage(
+                onBack: _onGoRoot,
                 task: state?.task,
               )),
         if(state?.isUnknown == true)
@@ -60,12 +63,17 @@ class MyRouterDelegate extends RouterDelegate<NavigationState>
     notifyListeners();
   }
 
+  _onGoRoot(){
+    state = NavigationState.root();
+    notifyListeners();
+  }
+
   _onTapAdd() {
     state = NavigationState.addTask();
     notifyListeners();
   }
 
-  _openChangeTask(Task task) {
+  _openChangeTask(TaskFreezed task) {
     Log.d('open Change Task, task = $task');
     state = NavigationState.changeTask(task: task);
     notifyListeners();
